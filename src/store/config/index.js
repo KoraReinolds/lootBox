@@ -1,27 +1,13 @@
+import generateModule from '../moduleGenerator';
+
 const defaultConfig = {};
 
-export default {
+export default generateModule({
   namespaced: true,
 
   state: {
     data: defaultConfig,
     lastSavedData: defaultConfig,
-  },
-
-  getters: {
-
-    data: (state) => state.data,
-
-    lastSavedData: (state) => state.lastSavedData,
-
-  },
-
-  mutations: {
-
-    data: (state, data) => { state.data = data; },
-
-    lastSavedData: (state, lastSavedData) => { state.lastSavedData = lastSavedData; },
-
   },
 
   actions: {
@@ -40,4 +26,4 @@ export default {
 
   },
 
-};
+});
