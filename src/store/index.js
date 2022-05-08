@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import config from './config';
+import lootBox from './lootBox';
 
 export default createStore({
   state: {
@@ -10,5 +11,6 @@ export default createStore({
   },
   modules: {
     config,
+    lootBox,
   },
 });

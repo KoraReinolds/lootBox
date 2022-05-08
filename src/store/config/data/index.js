@@ -14,6 +14,7 @@ export default generateModule({
 
     addNewLootBox({ commit, state }) {
       commit('lootBoxes', [...state.lootBoxes, { ...defaultLootBox }]);
+      commit('lootBox/lootBoxIndex', state.lootBoxes.length - 1, { root: true });
     },
 
   },
