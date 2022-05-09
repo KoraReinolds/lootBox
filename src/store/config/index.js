@@ -1,13 +1,11 @@
-import generateModule from '../moduleGenerator';
-
-const defaultConfig = {};
+import generateModule from '@/store/moduleGenerator';
+import data, { defaultConfigData } from './data';
 
 export default generateModule({
   namespaced: true,
 
   state: {
-    data: defaultConfig,
-    lastSavedData: defaultConfig,
+    lastSavedData: defaultConfigData,
   },
 
   actions: {
@@ -24,6 +22,10 @@ export default generateModule({
       }
     },
 
+  },
+
+  modules: {
+    data,
   },
 
 });
