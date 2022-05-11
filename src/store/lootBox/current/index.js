@@ -1,8 +1,10 @@
 import generateModule from '@/store/moduleGenerator';
+import { rarityConfig } from '@/store/steps';
 
 const defaultLootBox = {
   name: '',
   bitsCost: '',
+  ...rarityConfig,
 };
 
 export default generateModule({
