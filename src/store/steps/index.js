@@ -15,6 +15,28 @@ export default generateModule({
     currentStep: undefined,
   },
 
+  actions: {
+
+    currentStep({ commit, rootState }, step) {
+      const currentLootBox = rootState.lootBox.current;
+
+      if (!currentLootBox) {
+        console.warn("lootBox can't be find");
+        return;
+      }
+
+      const currentStep = currentLootBox[step];
+
+      if (!rarityList.includes(step) || !currentStep) {
+        console.warn("step can't be find");
+      }
+
+      commit('currentStep', step);
+      commit('current', currentStep);
+    },
+
+  },
+
   modules: {
     current,
   },

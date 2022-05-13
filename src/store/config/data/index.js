@@ -12,9 +12,9 @@ export default generateModule({
 
   actions: {
 
-    addNewLootBox({ commit, state }) {
+    addNewLootBox({ dispatch, commit, state }) {
       commit('lootBoxes', [...state.lootBoxes, { ...defaultLootBox }]);
-      commit('lootBox/lootBoxIndex', state.lootBoxes.length - 1, { root: true });
+      dispatch('lootBox/lootBoxIndex', state.lootBoxes.length - 1, { root: true });
     },
 
   },
