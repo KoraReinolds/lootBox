@@ -1,11 +1,15 @@
 import generateModule from '@/store/moduleGenerator';
-import data, { defaultConfigData } from './data';
+import data from './data';
 
 export default generateModule({
   namespaced: true,
 
   state: {
-    lastSavedData: defaultConfigData,
+    lastSavedData: undefined,
+  },
+
+  getters: {
+    configurationLoaded: (state) => !!state.lastSavedData,
   },
 
   actions: {

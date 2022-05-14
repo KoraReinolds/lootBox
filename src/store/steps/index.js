@@ -5,7 +5,7 @@ const rarityList = ['none', 'common', 'rare', 'epic', 'legendary'];
 
 const rarityConfig = rarityList.reduce((config, rarity) => ({
   ...config,
-  [rarity]: { ...defaultStep },
+  [rarity]: { ...defaultStep, active: rarity === 'common' },
 }), {});
 
 export default generateModule({

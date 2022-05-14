@@ -2,7 +2,7 @@ import generateModule from '@/store/moduleGenerator';
 import { defaultLootBox } from '@/store/lootBox/current';
 
 const defaultConfigData = {
-  lootBoxes: [],
+  lootBoxes: [{ ...defaultLootBox }],
 };
 
 export default generateModule({
