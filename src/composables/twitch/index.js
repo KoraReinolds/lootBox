@@ -7,6 +7,13 @@ export default () => {
 
   const store = useStore();
 
+  const saveConfig = () => {
+    const configuration = store.state.config.data;
+
+    store.commit('config/lastSavedData', configuration);
+    twitch.configuration.set('broadcaster', '1', JSON.stringify(configuration));
+  };
+
   const setBroadcasterConfig = () => {
     const broadcasterConfig = twitch.configuration.broadcaster;
 
@@ -20,5 +27,5 @@ export default () => {
 
   twitch.configuration.onChanged(setBroadcasterConfig);
 
-  return { twitch };
+  return { twitch, saveConfig };
 };
