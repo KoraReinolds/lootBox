@@ -1,11 +1,16 @@
 import generateModule from '@/store/moduleGenerator';
+import { rarityConfig } from '@/store/rarity';
 import current, { defaultStep } from './current';
 
 const rarityList = ['none', 'common', 'rare', 'epic', 'legendary'];
 
-const rarityConfig = rarityList.reduce((config, rarity) => ({
+const defaultSteps = rarityList.reduce((config, rarity) => ({
   ...config,
-  [rarity]: { ...defaultStep, active: rarity === 'common' },
+  [rarity]: {
+    ...defaultStep,
+    active: rarity === 'common',
+    rarityConfig,
+  },
 }), {});
 
 export default generateModule({
@@ -31,6 +36,9 @@ export default generateModule({
         console.warn("step can't be find");
       }
 
+      if (currentStep.rarityConfig) {
+        commit('rarity', currentStep.rarityConfig, { root: true });
+      }
       commit('currentStep', step);
       commit('current', currentStep);
     },
@@ -43,4 +51,4 @@ export default generateModule({
 
 });
 
-export { rarityList, rarityConfig };
+export { rarityList, defaultSteps };

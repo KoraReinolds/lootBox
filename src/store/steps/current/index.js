@@ -4,8 +4,6 @@ import { defaultAction } from '@/store/actions/current';
 const defaultStep = {
   active: true,
   finished: false,
-  chance: '0',
-  actions: [],
 };
 
 export default generateModule({
