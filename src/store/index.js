@@ -5,6 +5,7 @@ import lootBox from './lootBox';
 import steps from './steps';
 import actions from './actions';
 import rarity from './rarity';
+import general from './general';
 
 export default createStore(
   generateModule({
@@ -20,6 +21,7 @@ export default createStore(
       steps,
       actions,
       rarity,
+      general,
     },
   }),
 );
