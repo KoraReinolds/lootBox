@@ -6,6 +6,7 @@ import steps from './steps';
 import actions from './actions';
 import rarity from './rarity';
 import general from './general';
+import cost from './cost';
 
 export default createStore(
   generateModule({
@@ -22,6 +23,7 @@ export default createStore(
       actions,
       rarity,
       general,
+      cost,
     },
   }),
 );

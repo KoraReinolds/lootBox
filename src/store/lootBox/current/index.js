@@ -2,7 +2,6 @@ import generateModule from '@/store/moduleGenerator';
 import { defaultSteps } from '@/store/steps';
 
 const defaultLootBox = {
-  bitsCost: '',
   ...defaultSteps,
 };
 
