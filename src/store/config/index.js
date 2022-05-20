@@ -6,6 +6,7 @@ export default generateModule({
 
   state: {
     lastSavedData: undefined,
+    theme: 'light',
   },
 
   getters: {

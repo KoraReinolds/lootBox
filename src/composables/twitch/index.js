@@ -27,5 +27,9 @@ export default () => {
 
   twitch.configuration.onChanged(setBroadcasterConfig);
 
+  twitch.onContext((context) => {
+    if (context.theme) store.commit('config/theme', context.theme);
+  });
+
   return { twitch, saveConfig };
 };
