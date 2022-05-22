@@ -12,6 +12,12 @@ export default createStore(
   generateModule({
     state: {
     },
+    getters: {
+      rarity_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.rarityConfig || {},
+      general_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.generalConfig || {},
+      cost_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.costConfig || {},
+      actions_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.costConfig || {},
+    },
     mutations: {
     },
     actions: {

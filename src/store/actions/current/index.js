@@ -9,6 +9,8 @@ export default generateModule({
 
   state: { ...defaultAction },
 
+  stateLink: 'actions/current_',
+
 });
 
 export { defaultAction };

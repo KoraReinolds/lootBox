@@ -10,6 +10,8 @@ export default generateModule({
 
   state: { ...defaultLootBox },
 
+  stateLink: 'lootBox/current_',
+
 });
 
 export { defaultLootBox };

@@ -31,35 +31,8 @@ export default generateModule({
     currentStep: undefined,
   },
 
-  actions: {
-
-    currentStep({ commit, rootState }, step) {
-      const currentLootBox = rootState.lootBox.current;
-
-      if (!currentLootBox) {
-        console.warn("lootBox can't be find");
-        return;
-      }
-
-      const currentStep = currentLootBox[step];
-
-      if (!rarityList.includes(step) || !currentStep) {
-        console.warn("step can't be find");
-      }
-
-      if (currentStep.generalConfig) {
-        commit('general', currentStep.generalConfig, { root: true });
-      }
-      if (currentStep.costConfig) {
-        commit('cost', currentStep.costConfig, { root: true });
-      }
-      if (currentStep.rarityConfig) {
-        commit('rarity', currentStep.rarityConfig, { root: true });
-      }
-      commit('currentStep', step);
-      commit('current', currentStep);
-    },
-
+  getters: {
+    current_: (state, getters, rootState, rootGetters) => rootGetters['lootBox/current_'][state.currentStep],
   },
 
   modules: {

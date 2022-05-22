@@ -9,6 +9,8 @@ export default generateModule({
 
   state: { ...costConfig },
 
+  stateLink: 'cost_',
+
 });
 
 export { costConfig };

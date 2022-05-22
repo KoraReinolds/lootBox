@@ -9,6 +9,8 @@ export default generateModule({
 
   state: { ...generalConfig },
 
+  stateLink: 'general_',
+
 });
 
 export { generalConfig };
