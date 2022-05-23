@@ -9,15 +9,7 @@ const generateModule = (params) => {
         ...params.state,
       }).reduce((obj, key) => ({
         ...obj,
-        [key]: (state, getters, rootState, rootGetters) => {
-          const linkToState = params.stateLink
-            ? rootGetters[state.stateLink]
-            : state;
-
-          if (!linkToState) console.warn(`${key} not found in the state`);
-
-          return linkToState?.[key] || {};
-        },
+        [key]: (state) => state[key],
       }), {}),
 
       ...params.getters,
@@ -33,8 +25,8 @@ const generateModule = (params) => {
         ...obj,
         [key]: (state, payload) => {
           const stateForSaving = payload.state || state;
-          const newData = payload.payload || payload;
-
+          const newData = payload.payload === undefined
+            ? payload : payload.payload;
           stateForSaving[key] = newData;
         },
       }), {}),
@@ -45,18 +37,13 @@ const generateModule = (params) => {
 
     actions: {
 
-      ...Object.keys(
-        params.stateLink ? { ...params.state } : {},
-      ).reduce((obj, key) => ({
+      ...Object.keys({
+        ...params.state,
+        ...params.modules,
+      }).reduce((obj, key) => ({
         ...obj,
-        [key]: ({ state, commit, rootGetters }, payload) => {
-          commit(
-            key,
-            {
-              state: rootGetters[state.stateLink],
-              payload,
-            },
-          );
+        [key]: ({ state, commit }, payload) => {
+          commit(key, { state, payload });
         },
       }), {}),
 
@@ -66,6 +53,35 @@ const generateModule = (params) => {
   };
 
   if (params.stateLink) module.state = { stateLink: params.stateLink };
+
+  if (Object.keys(module.getters).length) {
+    module.getters = Object.entries(module.getters).reduce((sum, [key, f]) => ({
+      ...sum,
+      [key]: (state, getters, rootState, rootGetters) => f(
+        state.stateLink ? rootGetters[state.stateLink] : state,
+        getters, rootState, rootGetters,
+      ),
+    }), {});
+  }
+
+  if (Object.keys(module.actions).length) {
+    module.actions = Object.entries(module.actions).reduce((sum, [key, f]) => ({
+      ...sum,
+      [key]: (context, payload) => {
+        const { state, rootGetters } = context;
+
+        return f(
+          {
+            ...context,
+            state: state.stateLink
+              ? rootGetters[state.stateLink]
+              : state,
+          },
+          payload,
+        );
+      },
+    }), {});
+  }
 
   return module;
 };

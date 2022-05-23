@@ -15,14 +15,9 @@ export default generateModule({
 
   actions: {
 
-    addNewAction({
-      dispatch, commit, state, rootGetters,
-    }) {
-      // eslint-disable-next-line dot-notation
-      const actions = rootGetters[state.stateLink]?.actions;
-
-      dispatch('actions', [...actions, { ...defaultAction }]);
-      commit('actions/actionIndex', actions.length, { root: true });
+    addNewAction({ dispatch, state }) {
+      dispatch('actions', [...state.actions, { ...defaultAction }]);
+      dispatch('actions/actionIndex', state.actions.length - 1, { root: true });
     },
 
   },
