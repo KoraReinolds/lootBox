@@ -1,7 +1,12 @@
 import generateModule from '@/store/moduleGenerator';
 import { defaultAction } from '@/store/actions/current';
 
-const rarityConfig = {
+const rarityActiveConfig = {
+  chance: '100',
+  actions: [],
+};
+
+const rarityInactiveConfig = {
   chance: '0',
   actions: [],
 };
@@ -9,7 +14,7 @@ const rarityConfig = {
 export default generateModule({
   namespaced: true,
 
-  state: { ...rarityConfig },
+  state: { ...rarityActiveConfig },
 
   stateLink: 'rarity_',
 
@@ -24,4 +29,4 @@ export default generateModule({
 
 });
 
-export { rarityConfig };
+export { rarityActiveConfig, rarityInactiveConfig };

@@ -10,6 +10,15 @@ export default generateModule({
 
   state: { ...defaultLootBox },
 
+  getters: {
+
+    allSteps: (state) => Object.values(state),
+
+    activeSteps: (state, getters) => getters.allSteps
+      .filter((step) => step.active),
+
+  },
+
   stateLink: 'lootBox/current_',
 
 });

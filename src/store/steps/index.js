@@ -1,28 +1,41 @@
 import generateModule from '@/store/moduleGenerator';
-import { rarityConfig } from '@/store/rarity';
+import { rarityActiveConfig, rarityInactiveConfig } from '@/store/rarity';
 import { generalConfig } from '@/store/general';
 import { costConfig } from '@/store/cost';
-import current, { defaultStep } from './current';
+import current, { defaultInactiveStep, defaultActiveStep } from './current';
 
 const rarityList = ['none', 'common', 'rare', 'epic', 'legendary'];
+
+const defaultActiveFields = ['common', 'cost'];
+
+const defaultField = rarityList[1];
 
 const defaultSteps = rarityList.reduce((config, rarity) => ({
   ...config,
   [rarity]: {
-    ...defaultStep,
-    active: rarity === 'common',
-    rarityConfig,
+    ...defaultInactiveStep,
+    rarityConfig: rarityInactiveConfig,
   },
-}), {
-  general: {
-    ...defaultStep,
-    generalConfig,
-  },
-  cost: {
-    ...defaultStep,
-    costConfig,
-  },
+}), {});
+
+defaultSteps.general = {
+  ...defaultInactiveStep,
+  generalConfig,
+};
+
+defaultSteps.cost = {
+  ...defaultInactiveStep,
+  costConfig,
+};
+
+defaultActiveFields.forEach((field) => {
+  defaultSteps[field] = {
+    ...defaultSteps[field],
+    ...defaultActiveStep,
+  };
 });
+
+defaultSteps[defaultField].rarityConfig = rarityActiveConfig;
 
 export default generateModule({
   namespaced: true,

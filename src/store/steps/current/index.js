@@ -1,17 +1,20 @@
 import generateModule from '@/store/moduleGenerator';
 
-const defaultStep = {
+const defaultInactiveStep = {
+  active: false,
+};
+
+const defaultActiveStep = {
   active: true,
-  finished: false,
 };
 
 export default generateModule({
   namespaced: true,
 
-  state: { ...defaultStep },
+  state: { ...defaultActiveStep },
 
   stateLink: 'steps/current_',
 
 });
 
-export { defaultStep };
+export { defaultInactiveStep, defaultActiveStep };
