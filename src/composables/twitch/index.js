@@ -19,7 +19,7 @@ export default () => {
 
     store.dispatch(
       'config/setConfig',
-      broadcasterConfig?.content || JSON.stringify(defaultConfigData),
+        broadcasterConfig?.content || JSON.stringify(defaultConfigData),
     );
   };
 
