@@ -9,7 +9,11 @@ export default generateModule({
   },
 
   getters: {
-    current_: (state, getters, rootState, rootGetters) => rootGetters['config/data/lootBoxes'][state.lootBoxIndex] || {},
+    current_: (state, getters, rootState, rootGetters) => Object.fromEntries(
+      Object.entries(
+        rootGetters['config/data/lootBoxes'][state.lootBoxIndex] || {},
+      ).map(([key, val]) => ([key, { ...val, name: key }])),
+    ),
   },
 
   modules: {
