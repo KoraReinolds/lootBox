@@ -2,6 +2,13 @@
   <router-view/>
 </template>
 
+<script setup>
+import useTwitch from '@/composables/twitch';
+
+useTwitch();
+
+</script>
+
 <style lang="stylus">
 #app
   font-family Avenir, Helvetica, Arial, sans-serif

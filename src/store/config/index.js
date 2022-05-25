@@ -15,12 +15,18 @@ export default generateModule({
 
   actions: {
 
-    setConfig({ commit }, configString) {
+    setConfig({ dispatch, commit, rootGetters }, configString) {
       try {
         const config = JSON.parse(configString);
 
         commit('data', config);
         commit('lastSavedData', config);
+        dispatch('lootBox/lootBoxIndex', 0, { root: true });
+        dispatch(
+          'steps/currentStep',
+          rootGetters['lootBox/current/activeSteps'][0]?.name,
+          { root: true },
+        );
       } catch {
         // TODO: make ui
         console.warn('error during parsing config');
