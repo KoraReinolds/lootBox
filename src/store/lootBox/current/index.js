@@ -17,6 +17,9 @@ export default generateModule({
     activeSteps: (state, getters) => getters.allSteps
       .filter((step) => step.active),
 
+    availableSteps: (state, getters) => getters.activeSteps
+      .map((step) => step.name),
+
   },
 
   stateLink: 'lootBox/current_',

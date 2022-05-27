@@ -22,11 +22,10 @@ export default generateModule({
         commit('data', config);
         commit('lastSavedData', config);
         dispatch('lootBox/lootBoxIndex', 0, { root: true });
-        dispatch(
-          'steps/currentStep',
-          rootGetters['lootBox/current/activeSteps'][0]?.name,
-          { root: true },
-        );
+
+        const avalableSteps = rootGetters['lootBox/current/availableSteps'];
+
+        dispatch('steps/currentStep', avalableSteps[0], { root: true });
       } catch {
         // TODO: make ui
         console.warn('error during parsing config');
