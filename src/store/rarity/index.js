@@ -3,12 +3,12 @@ import { defaultAction } from '@/store/actions/current';
 
 const rarityActiveConfig = {
   chance: '100',
-  actions: [],
+  actions: [{ ...defaultAction }],
 };
 
 const rarityInactiveConfig = {
   chance: '0',
-  actions: [],
+  actions: [{ ...defaultAction }],
 };
 
 export default generateModule({

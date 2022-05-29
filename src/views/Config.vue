@@ -1,15 +1,12 @@
 <template>
   <div>
     <Stepper />
-    <div>{{ currentStep }}</div>
+    <ActionList />
   </div>
 </template>
 
 <script setup>
 import Stepper from '@/components/Stepper.vue';
-
-import useSteps from '@/composables/steps';
-
-const { currentStep } = useSteps();
+import ActionList from '@/components/ActionList.vue';
 
 </script>

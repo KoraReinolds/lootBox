@@ -6,7 +6,7 @@ import current, { defaultInactiveStep, defaultActiveStep } from './current';
 
 const rarityList = ['none', 'common', 'rare', 'epic', 'legendary'];
 
-const defaultActiveFields = ['common', 'cost'];
+const defaultActiveFields = ['none', 'common', 'rare', 'epic', 'legendary'];
 
 const defaultField = rarityList[1];
 
