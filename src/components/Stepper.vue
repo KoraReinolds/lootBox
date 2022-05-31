@@ -1,18 +1,17 @@
 <template>
   <div>
-    <div
+    <Step
       v-for="step in steps"
       :key="step.name"
-      @click="changeStep(step.name)"
-    >
-      {{ step.name }}
-    </div>
+      :step="step"
+    />
   </div>
 </template>
 
 <script setup>
 import useSteps from '@/composables/steps';
+import Step from '@/components/Step.vue';
 
-const { steps, changeStep } = useSteps();
+const { steps } = useSteps();
 
 </script>
