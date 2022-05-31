@@ -8,11 +8,14 @@ export default () => {
 
   const currentStep = computed(() => store.getters['steps/current_']);
 
-  const changeStep = (params) => store.dispatch('steps/currentStep', params);
+  const changeStep = (step) => store.dispatch('steps/currentStep', step);
+
+  const changeChance = (chance) => store.dispatch('rarity/chance', chance);
 
   return {
     steps,
     changeStep,
     currentStep,
+    changeChance,
   };
 };
