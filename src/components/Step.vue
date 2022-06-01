@@ -2,10 +2,10 @@
   <div
     @mousedown="changeStep(step.name)"
   >
-    <span>{{ `(${chance})  ` }}</span>
+    <span>({{ step.rarityConfig.chance }})  </span>
     <span>{{ step.name }}</span>
     <InputRange
-      :list="Array.from(Array(101).keys())"
+      :list="list"
       :modelValue="chance"
       @update:modelValue="changeChance"
     />
@@ -15,7 +15,9 @@
 <script setup>
 import useSteps from '@/composables/steps';
 import InputRange from '@/components/InputRange.vue';
-import { computed, defineProps } from 'vue';
+import {
+  ref, computed, defineProps, watch,
+} from 'vue';
 
 const props = defineProps({
   step: {
@@ -24,7 +26,21 @@ const props = defineProps({
   },
 });
 
-const { changeStep, changeChance } = useSteps();
-const chance = computed(() => props.step.rarityConfig.chance);
+const {
+  noneChance, changeStep, changeCurrentChance,
+} = useSteps();
+const chance = ref(props.step.rarityConfig.chance);
+const maxValue = computed(() => ((+noneChance.value + +chance.value) || 101) + 1);
+const list = computed(() => [...Array(maxValue.value).keys()]);
+const changeChance = (currentChance) => { chance.value = currentChance; };
+watch(chance, (curChance, prevChance) => {
+  const stepName = props.step.name;
+  const delta = curChance - prevChance;
+
+  changeCurrentChance(curChance);
+  changeStep('none');
+  changeCurrentChance(`${+noneChance.value - +delta}`);
+  changeStep(stepName);
+});
 
 </script>

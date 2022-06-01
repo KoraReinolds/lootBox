@@ -6,16 +6,21 @@ export default () => {
 
   const steps = computed(() => store.getters['lootBox/current/activeSteps']);
 
+  const noneStep = computed(() => store.getters['lootBox/current/none']);
+
+  const noneChance = computed(() => noneStep.value.rarityConfig.chance);
+
   const currentStep = computed(() => store.getters['steps/current_']);
 
   const changeStep = (step) => store.dispatch('steps/currentStep', step);
 
-  const changeChance = (chance) => store.dispatch('rarity/chance', chance);
+  const changeCurrentChance = (chance) => store.dispatch('rarity/chance', chance);
 
   return {
     steps,
     changeStep,
     currentStep,
-    changeChance,
+    changeCurrentChance,
+    noneChance,
   };
 };
