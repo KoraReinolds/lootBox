@@ -19,7 +19,8 @@ import fontSMTH from '../../public/fonts/Ruslan_Display_Regular.typeface.json';
 
 const widget = ref(document.createElement('div'));
 const scene = new THREE.Scene();
-
+let textMesh;
+const start = new Date();
 const showText = (text) => {
   const textGeo = new TextGeometry(text, {
     font: new FontLoader().parse(fontSMTH),
@@ -32,7 +33,7 @@ const showText = (text) => {
 
   textGeo.computeBoundingBox();
 
-  const textMesh = new THREE.Mesh(textGeo, [
+  textMesh = new THREE.Mesh(textGeo, [
     new THREE.MeshPhongMaterial({ color: 0x000000, flatShading: true }), // front
     new THREE.MeshPhongMaterial({ color: 0xffffff }), // side
   ]);
@@ -70,6 +71,13 @@ const initScene = () => {
   const animate = () => {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    if (textMesh) {
+      const now = new Date() - start;
+
+      const value = Math.sin(now / 500);
+
+      textMesh.position.y = value * 5 - 100;
+    }
   };
 
   animate();
