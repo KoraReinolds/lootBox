@@ -33,14 +33,14 @@ const showText = (text) => {
   textGeo.computeBoundingBox();
 
   const textMesh = new THREE.Mesh(textGeo, [
-    new THREE.MeshPhongMaterial({ color: 0x111111, flatShading: true }), // front
-    new THREE.MeshPhongMaterial({ color: 0xaaaaaa }), // side
+    new THREE.MeshPhongMaterial({ color: 0x000000, flatShading: true }), // front
+    new THREE.MeshPhongMaterial({ color: 0xffffff }), // side
   ]);
 
   if (textGeo.boundingBox) {
     const centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
     textMesh.position.x = centerOffset;
-    textMesh.rotation.y = Math.PI * 2;
+    textMesh.position.y = -100;
     textMesh.position.z = 0;
   }
 

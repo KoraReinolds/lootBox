@@ -1,7 +1,10 @@
 src/composables/steps/index.js<template>
   <div class="config">
     <Stepper />
-    <Widget class="widget" />
+    <div class="widget">
+      <img src="@/assets/lootbox.gif" >
+      <Widget class="canvas" />
+    </div>
     <ActionList />
   </div>
 </template>
@@ -13,7 +16,7 @@ import Widget from '@/components/Widget.vue';
 
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .config
   display: flex
 
@@ -22,6 +25,16 @@ import Widget from '@/components/Widget.vue';
     height: 500px
 
   .widget
-    width: 50%
+    position: relative
+    width: 500px
+
+    img
+      position: absolute
+      top: 0
+      left: 0
+
+    .canvas
+      width: 100%
+      height: 100%
 
 </style>
