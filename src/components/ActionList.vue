@@ -1,15 +1,17 @@
 <template>
-  <div
-    v-for="(action, index) in currentActions"
-    :key="`action-${index}`"
-  >
-    <BaseInput
-      :modelValue="action.value"
-      @update:modelValue="setActionValue($event)"
-      @focus="setActionIndex(index)"
-      @blur="saveActions"
-      placeholder="write to add new action"
-    />
+  <div>
+    <div
+      v-for="(action, index) in currentActions"
+      :key="`action-${index}`"
+    >
+      <BaseInput
+        :modelValue="action.value"
+        @update:modelValue="setActionValue($event)"
+        @focus="setActionIndex(index)"
+        @blur="saveActions"
+        placeholder="write to add new action"
+      />
+    </div>
   </div>
 </template>
 
