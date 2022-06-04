@@ -14,13 +14,13 @@ import {
 } from 'vue';
 import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import useActions from '@/composables/actions';
+import useScene from '@/composables/scene';
 import fontSMTH from '../../public/fonts/Ruslan_Display_Regular.typeface.json';
 
 const widget = ref(document.createElement('div'));
-const scene = new THREE.Scene();
+const { scene, initScene } = useScene();
 let textMesh;
 const start = new Date();
 const { currentAction } = useActions();
@@ -51,47 +51,21 @@ const showText = (text) => {
   scene.add(textMesh);
 };
 
-const initScene = () => {
-  const { width, height } = widget.value.getBoundingClientRect();
-  const camera = new THREE.PerspectiveCamera(
-    75, width / height, 0.1, 1000,
-  );
-  camera.position.z = 500;
+const animation = () => {
+  if (textMesh) {
+    const now = new Date() - start;
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.physicallyCorrectLights = true;
+    const value = Math.sin(now / 500);
+    const scale = 1 + value / 100;
 
-  renderer.setSize(width, height);
-  widget.value.appendChild(renderer.domElement);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.update();
-
-  const light = new THREE.AmbientLight(0x404040, 10);
-  scene.add(light);
-
-  const animate = () => {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-    if (textMesh) {
-      const now = new Date() - start;
-
-      const value = Math.sin(now / 500);
-      const scale = 1 + value / 100;
-
-      textMesh.position.y = value * 5 - 100;
-      textMesh.scale.set(scale, scale, scale);
-    }
-  };
-
-  animate();
-
-  watch(currentAction, (text) => showText(text));
+    textMesh.position.y = value * 5 - 100;
+    textMesh.scale.set(scale, scale, scale);
+  }
 };
 
 onMounted(() => {
-  initScene();
+  initScene({ widget, animation });
+  watch(currentAction, (text) => showText(text));
 });
 
 </script>
