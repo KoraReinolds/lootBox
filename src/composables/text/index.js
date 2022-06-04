@@ -1,16 +1,9 @@
-import {
-  watch,
-  onMounted,
-} from 'vue';
 import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
-import useActions from '@/composables/actions';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 
-export default (scene) => {
-  const textMeshes = {};
-  const { currentAction } = useActions();
+export default ({ scene, textMeshes }) => {
   const showText = (text) => {
     const textGeo = new TextGeometry(text, {
       font: new FontLoader().parse(fontSMTH),
@@ -23,26 +16,28 @@ export default (scene) => {
 
     textGeo.computeBoundingBox();
 
-    if (textMeshes.firstLine) scene.remove(textMeshes.firstLine);
+    textMeshes.forEach((mesh) => {
+      console.log(mesh);
+      scene.remove(mesh);
+    });
 
-    textMeshes.firstLine = new THREE.Mesh(textGeo, [
+    textMeshes.pop();
+
+    const index = textMeshes.push(new THREE.Mesh(textGeo, [
       new THREE.MeshPhongMaterial({ color: 0x000000, flatShading: true }), // front
       new THREE.MeshPhongMaterial({ color: 0xffffff }), // side
-    ]);
+    ])) - 1;
 
     if (textGeo.boundingBox) {
       textGeo.center();
-      textMeshes.firstLine.position.y = -100;
+      // eslint-disable-next-line no-param-reassign
+      textMeshes[index].position.y = -100;
     }
 
-    scene.add(textMeshes.firstLine);
+    scene.add(textMeshes[index]);
   };
 
-  onMounted(() => {
-    watch(currentAction, (text) => showText(text));
-  });
-
   return {
-    textMeshes,
+    showText,
   };
 };

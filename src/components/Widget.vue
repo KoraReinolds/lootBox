@@ -9,32 +9,38 @@
 <script setup>
 import {
   ref,
+  watch,
   onMounted,
 } from 'vue';
 import useText from '@/composables/text';
 import useScene from '@/composables/scene';
+import useActions from '@/composables/actions';
 
 const widget = ref(document.createElement('div'));
 const { scene, initScene } = useScene();
-const { textMeshes } = useText(scene);
+const { currentAction } = useActions();
 const start = new Date();
+const textMeshes = [];
 
 const animation = () => {
-  const textMesh = textMeshes.firstLine;
-
-  if (textMesh) {
+  textMeshes.forEach((textMesh) => {
     const now = new Date() - start;
 
     const value = Math.sin(now / 500);
     const scale = 1 + value / 100;
 
+    // eslint-disable-next-line no-param-reassign
     textMesh.position.y = value * 5 - 100;
     textMesh.scale.set(scale, scale, scale);
-  }
+  });
 };
 
 onMounted(() => {
   initScene({ widget, animation });
+
+  const { showText } = useText({ scene, textMeshes });
+
+  watch(currentAction, (value) => showText(value));
 });
 
 </script>
