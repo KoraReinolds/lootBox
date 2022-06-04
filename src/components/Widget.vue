@@ -39,10 +39,8 @@ const showText = (text) => {
   ]);
 
   if (textGeo.boundingBox) {
-    const centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
-    textMesh.position.x = centerOffset;
+    textGeo.center();
     textMesh.position.y = -100;
-    textMesh.position.z = 0;
   }
 
   scene.add(textMesh);
@@ -75,8 +73,10 @@ const initScene = () => {
       const now = new Date() - start;
 
       const value = Math.sin(now / 500);
+      const scale = 1 + value / 100;
 
       textMesh.position.y = value * 5 - 100;
+      textMesh.scale.set(scale, scale, scale);
     }
   };
 
