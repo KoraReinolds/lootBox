@@ -8,6 +8,7 @@
 
 <script setup>
 import {
+  watch,
   ref,
   onMounted,
 } from 'vue';
@@ -15,13 +16,17 @@ import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import useActions from '@/composables/actions';
 import fontSMTH from '../../public/fonts/Ruslan_Display_Regular.typeface.json';
 
 const widget = ref(document.createElement('div'));
 const scene = new THREE.Scene();
 let textMesh;
 const start = new Date();
+const { currentAction } = useActions();
 const showText = (text) => {
+  if (textMesh) scene.remove(textMesh);
+
   const textGeo = new TextGeometry(text, {
     font: new FontLoader().parse(fontSMTH),
     curveSegments: 4,
@@ -82,7 +87,7 @@ const initScene = () => {
 
   animate();
 
-  showText('Какой-то\nтекст');
+  watch(currentAction, (text) => showText(text));
 };
 
 onMounted(() => {

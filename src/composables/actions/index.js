@@ -6,6 +6,8 @@ export default () => {
 
   const currentActions = computed(() => store.getters['rarity/actions']);
 
+  const currentAction = computed(() => store.getters['actions/current_'].value);
+
   const setActionIndex = (index) => store.dispatch('actions/actionIndex', index);
 
   const saveActions = () => store.dispatch('rarity/addNewAction');
@@ -14,6 +16,8 @@ export default () => {
 
   return {
     currentActions,
+    currentAction,
+
     setActionIndex,
     setActionValue,
     saveActions,
