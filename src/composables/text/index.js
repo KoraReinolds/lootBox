@@ -4,8 +4,8 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 
 export default ({ scene, textMeshes }) => {
-  const showText = (text) => {
-    const textGeo = new TextGeometry(text, {
+  const createTextAndAddToScene = (lineText, index) => {
+    const textGeo = new TextGeometry(lineText, {
       font: new FontLoader().parse(fontSMTH),
       curveSegments: 4,
       height: 20,
@@ -16,25 +16,31 @@ export default ({ scene, textMeshes }) => {
 
     textGeo.computeBoundingBox();
 
-    textMeshes.forEach((mesh) => {
-      console.log(mesh);
-      scene.remove(mesh);
-    });
-
-    textMeshes.pop();
-
-    const index = textMeshes.push(new THREE.Mesh(textGeo, [
+    textMeshes.push(new THREE.Mesh(textGeo, [
       new THREE.MeshPhongMaterial({ color: 0x000000, flatShading: true }), // front
       new THREE.MeshPhongMaterial({ color: 0xffffff }), // side
-    ])) - 1;
+    ]));
 
     if (textGeo.boundingBox) {
       textGeo.center();
       // eslint-disable-next-line no-param-reassign
-      textMeshes[index].position.y = -100;
+      textMeshes[index].position.y = -80 * (index + 1);
     }
 
     scene.add(textMeshes[index]);
+  };
+
+  const showText = (text) => {
+    const lines = text
+      .match(/.{5,10}? |.*/g)
+      .filter((line) => line);
+
+    while (textMeshes.length) {
+      const mesh = textMeshes.pop();
+      scene.remove(mesh);
+    }
+
+    lines.forEach(createTextAndAddToScene);
   };
 
   return {

@@ -27,10 +27,10 @@ const animation = () => {
     const now = new Date() - start;
 
     const value = Math.sin(now / 500);
-    const scale = 1 + value / 100;
+    const scale = textMesh.scale.x + value * 0.001;
 
     // eslint-disable-next-line no-param-reassign
-    textMesh.position.y = value * 5 - 100;
+    textMesh.position.y += value * 0.1;
     textMesh.scale.set(scale, scale, scale);
   });
 };
