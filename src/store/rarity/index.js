@@ -20,6 +20,13 @@ export default generateModule({
 
   actions: {
 
+    deleteAction({ dispatch, rootGetters, state }) {
+      const currentIndex = rootGetters['actions/actionIndex'];
+
+      dispatch('actions', state.actions.filter((_, index) => index !== currentIndex));
+      dispatch('actions/actionIndex', undefined, { root: true });
+    },
+
     addNewAction({ dispatch, state }) {
       dispatch('actions', [...state.actions, { ...defaultAction }]);
       dispatch('actions/actionIndex', state.actions.length - 1, { root: true });

@@ -10,7 +10,18 @@ export default () => {
 
   const setActionIndex = (index) => store.dispatch('actions/actionIndex', index);
 
-  const saveActions = () => store.dispatch('rarity/addNewAction');
+  const deleteAction = () => store.dispatch('rarity/deleteAction');
+
+  const saveActions = () => {
+    const list = currentActions.value;
+    const lastIndex = list.length - 1;
+
+    if (!currentAction.value && lastIndex) deleteAction();
+
+    if (list[lastIndex].value) {
+      store.dispatch('rarity/addNewAction');
+    }
+  };
 
   const setActionValue = (val) => store.dispatch('actions/current/value', val);
 

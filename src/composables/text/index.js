@@ -31,6 +31,8 @@ export default ({ scene, textMeshes }) => {
   };
 
   const showText = (text) => {
+    if (text === undefined) return;
+
     const lines = text
       .match(/.{5,10}? |.*/g)
       .filter((line) => line);
