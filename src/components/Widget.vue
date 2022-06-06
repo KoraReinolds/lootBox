@@ -37,6 +37,11 @@ const positionChange = ({ f, mesh, axis }) => {
   axis.forEach((dir) => { mesh.position[dir] = f(); });
 };
 
+const opacityChange = ({ f, mesh }) => {
+  // eslint-disable-next-line no-param-reassign
+  mesh.material.forEach((mat) => { mat.opacity = f(); });
+};
+
 const animation = () => {
   textMeshes.forEach((mesh, index) => {
     const toPosition = -80 * (index + 1);
@@ -49,6 +54,15 @@ const animation = () => {
         duration: 2000,
         from: fromPosition,
         to: toPosition,
+      }),
+    });
+
+    opacityChange({
+      mesh,
+      f: () => linearFunction({
+        duration: 2000,
+        from: 0,
+        to: 1,
       }),
     });
   });

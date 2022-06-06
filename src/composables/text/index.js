@@ -17,8 +17,15 @@ export default ({ scene, textMeshes }) => {
     textGeo.computeBoundingBox();
 
     textMeshes.push(new THREE.Mesh(textGeo, [
-      new THREE.MeshPhongMaterial({ color: 0x000000, flatShading: true }), // front
-      new THREE.MeshPhongMaterial({ color: 0xffffff }), // side
+      new THREE.MeshPhongMaterial({
+        transparent: true,
+        color: 0x000000,
+        flatShading: true,
+      }), // front
+      new THREE.MeshPhongMaterial({
+        transparent: true,
+        color: 0xffffff,
+      }), // side
     ]));
 
     if (textGeo.boundingBox) {
