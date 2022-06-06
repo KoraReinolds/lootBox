@@ -73,7 +73,13 @@ onMounted(() => {
 
   const { showText } = useText({ scene, textMeshes });
 
-  watch(currentAction, (value) => showText(value));
+  watch(currentAction, (value) => {
+    showText(value);
+    animation();
+    textMeshes.forEach((mesh) => {
+      if (!mesh.parent) scene.add(mesh);
+    });
+  });
 });
 
 </script>

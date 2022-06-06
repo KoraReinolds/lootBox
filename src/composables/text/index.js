@@ -4,7 +4,7 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 
 export default ({ scene, textMeshes }) => {
-  const createTextAndAddToScene = (lineText, index) => {
+  const createTextAndAddToScene = (lineText) => {
     const textGeo = new TextGeometry(lineText, {
       font: new FontLoader().parse(fontSMTH),
       curveSegments: 4,
@@ -30,11 +30,7 @@ export default ({ scene, textMeshes }) => {
 
     if (textGeo.boundingBox) {
       textGeo.center();
-      // eslint-disable-next-line no-param-reassign
-      textMeshes[index].position.y = -80 * (index + 1);
     }
-
-    scene.add(textMeshes[index]);
   };
 
   const showText = (text) => {
