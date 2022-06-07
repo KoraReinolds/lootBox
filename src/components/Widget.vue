@@ -22,14 +22,15 @@ const { currentAction } = useActions();
 let start = new Date();
 const textMeshes = [];
 
-const linearFunction = ({
-  duration, from, to,
+const powFunction = ({
+  duration, from, to, pow = 0.3,
 }) => {
   if (new Date() - start > duration) start = new Date();
 
   const delta = new Date() - start;
+  const ratio = delta / duration;
 
-  return from + (to - from) * (delta / duration);
+  return from + (to - from) * (ratio ** pow);
 };
 
 const positionChange = ({ f, mesh, axis }) => {
@@ -50,7 +51,7 @@ const animation = () => {
     positionChange({
       mesh,
       axis: ['y'],
-      f: () => linearFunction({
+      f: () => powFunction({
         duration: 2000,
         from: fromPosition,
         to: toPosition,
@@ -59,7 +60,7 @@ const animation = () => {
 
     opacityChange({
       mesh,
-      f: () => linearFunction({
+      f: () => powFunction({
         duration: 2000,
         from: 0,
         to: 1,
