@@ -43,10 +43,42 @@ const opacityChange = ({ f, mesh }) => {
   mesh.material.forEach((mat) => { mat.opacity = f(); });
 };
 
+const scaleChange = ({ f, mesh }) => {
+  const value = f();
+  // eslint-disable-next-line no-param-reassign
+  mesh.scale.set(value, value, value);
+};
+const rotationChange = ({ f, mesh, axis }) => {
+  // eslint-disable-next-line no-param-reassign
+  axis.forEach((dir) => { mesh.rotation[dir] = f(); });
+};
+
 const animation = () => {
   textMeshes.forEach((mesh, index) => {
     const toPosition = -80 * (index + 1);
     const fromPosition = toPosition - 100;
+
+    rotationChange({
+      mesh,
+      axis: ['x'],
+      f: () => powFunction({
+        duration: 2000,
+        from: -Math.PI / 2,
+        to: 0,
+        pow: 0.3,
+      }),
+    });
+
+    rotationChange({
+      mesh,
+      axis: ['y'],
+      f: () => powFunction({
+        duration: 2000,
+        from: -Math.PI / 2,
+        to: 0,
+        pow: 0.3,
+      }),
+    });
 
     positionChange({
       mesh,
@@ -62,6 +94,16 @@ const animation = () => {
       mesh,
       f: () => powFunction({
         duration: 2000,
+        from: 0,
+        to: 1,
+      }),
+    });
+
+    scaleChange({
+      mesh,
+      f: () => powFunction({
+        duration: 2000,
+        pow: 0.15,
         from: 0,
         to: 1,
       }),
