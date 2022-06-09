@@ -16,28 +16,30 @@ import useText from '@/composables/text';
 import useScene from '@/composables/scene';
 import useActions from '@/composables/actions';
 import useAnamation from '@/composables/animation';
+import * as THREE from 'three';
 
 const widget = ref(document.createElement('div'));
 const { scene, initScene } = useScene();
 const { currentAction } = useActions();
 const { animateMeshes } = useAnamation();
 const textMeshes = [];
+const group = new THREE.Group();
 
 const animation = () => {
-  animateMeshes(textMeshes);
+  animateMeshes({ group });
 };
 
 onMounted(() => {
   initScene({ widget, animation });
 
-  const { showText } = useText({ scene, textMeshes });
+  const { showText } = useText({ group, textMeshes });
+
+  scene.add(group);
 
   watch(currentAction, (value) => {
     showText(value);
+
     animation();
-    textMeshes.forEach((mesh) => {
-      if (!mesh.parent) scene.add(mesh);
-    });
   });
 });
 

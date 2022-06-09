@@ -2,9 +2,10 @@ import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
+import { animationFunctions } from '@/composables/animation';
 
-export default ({ scene, textMeshes }) => {
-  const createTextAndAddToScene = (lineText) => {
+export default ({ group, textMeshes }) => {
+  const createTextAndAddToScene = (lineText, index) => {
     const textGeo = new TextGeometry(lineText, {
       font: new FontLoader().parse(fontSMTH),
       curveSegments: 4,
@@ -31,6 +32,12 @@ export default ({ scene, textMeshes }) => {
     if (textGeo.boundingBox) {
       textGeo.center();
     }
+    animationFunctions.positionChange({
+      value: -80 * index,
+      mesh: textMeshes[index],
+      axis: ['y'],
+    });
+    group.add(textMeshes[index]);
   };
 
   const showText = (text) => {
@@ -42,7 +49,7 @@ export default ({ scene, textMeshes }) => {
 
     while (textMeshes.length) {
       const mesh = textMeshes.pop();
-      scene.remove(mesh);
+      group.remove(mesh);
     }
 
     lines.forEach(createTextAndAddToScene);
