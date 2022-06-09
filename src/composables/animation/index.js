@@ -1,6 +1,24 @@
 export default () => {
   let start = new Date();
 
+  const animationFunctions = {
+    positionChange: ({ value, mesh, axis }) => {
+      // eslint-disable-next-line no-param-reassign
+      axis.forEach((dir) => { mesh.position[dir] = value; });
+    },
+    opacityChange: ({ value, mesh }) => {
+      // eslint-disable-next-line no-param-reassign
+      mesh.material.forEach((mat) => { mat.opacity = value; });
+    },
+    scaleChange: ({ value, mesh }) => {
+      mesh.scale.set(value, value, value);
+    },
+    rotationChange: ({ value, mesh, axis }) => {
+      // eslint-disable-next-line no-param-reassign
+      axis.forEach((dir) => { mesh.rotation[dir] = value; });
+    },
+  };
+
   const powFunction = ({
     duration, from, to, pow = 0.3,
   }) => {
@@ -12,81 +30,59 @@ export default () => {
     return from + (to - from) * (ratio ** pow);
   };
 
-  const positionChange = ({ f, mesh, axis }) => {
-  // eslint-disable-next-line no-param-reassign
-    axis.forEach((dir) => { mesh.position[dir] = f(); });
-  };
+  const animate = ({
+    functionName, ...params
+  }) => {
+    const animationFunction = animationFunctions[functionName];
 
-  const opacityChange = ({ f, mesh }) => {
-  // eslint-disable-next-line no-param-reassign
-    mesh.material.forEach((mat) => { mat.opacity = f(); });
-  };
+    if (!animationFunction) return;
 
-  const scaleChange = ({ f, mesh }) => {
-    const value = f();
-    // eslint-disable-next-line no-param-reassign
-    mesh.scale.set(value, value, value);
+    animationFunction({
+      ...params,
+      value: powFunction(params),
+    });
   };
-  const rotationChange = ({ f, mesh, axis }) => {
-  // eslint-disable-next-line no-param-reassign
-    axis.forEach((dir) => { mesh.rotation[dir] = f(); });
-  };
-  console.log(rotationChange, positionChange, opacityChange, scaleChange);
 
   const animateMeshes = (textMeshes) => {
     textMeshes.forEach((mesh, index) => {
       const toPosition = -80 * (index + 1);
       const fromPosition = toPosition - 100;
 
-      rotationChange({
+      const defaultParams = {
         mesh,
-        axis: ['x'],
-        f: () => powFunction({
-          duration: 2000,
-          from: -Math.PI / 2,
-          to: 0,
-          pow: 0.3,
-        }),
+        duration: 2000,
+      };
+
+      animate({
+        ...defaultParams,
+        functionName: 'rotationChange',
+        axis: ['x', 'y'],
+        from: -Math.PI / 2,
+        to: 0,
+        pow: 0.3,
       });
 
-      rotationChange({
-        mesh,
+      animate({
+        ...defaultParams,
+        functionName: 'positionChange',
         axis: ['y'],
-        f: () => powFunction({
-          duration: 2000,
-          from: -Math.PI / 2,
-          to: 0,
-          pow: 0.3,
-        }),
+        from: fromPosition,
+        to: toPosition,
       });
 
-      positionChange({
-        mesh,
-        axis: ['y'],
-        f: () => powFunction({
-          duration: 2000,
-          from: fromPosition,
-          to: toPosition,
-        }),
+      animate({
+        ...defaultParams,
+        functionName: 'opacityChange',
+        from: 0,
+        to: 1,
       });
 
-      opacityChange({
-        mesh,
-        f: () => powFunction({
-          duration: 2000,
-          from: 0,
-          to: 1,
-        }),
-      });
-
-      scaleChange({
-        mesh,
-        f: () => powFunction({
-          duration: 2000,
-          pow: 0.15,
-          from: 0,
-          to: 1,
-        }),
+      animate({
+        ...defaultParams,
+        functionName: 'scaleChange',
+        pow: 0.15,
+        from: 0,
+        to: 1,
       });
     });
   };
