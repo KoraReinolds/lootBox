@@ -17,7 +17,7 @@ export default ({ group, textMeshes }) => {
 
     textGeo.computeBoundingBox();
 
-    textMeshes.push(new THREE.Mesh(textGeo, [
+    const mesh = new THREE.Mesh(textGeo, [
       new THREE.MeshPhongMaterial({
         transparent: true,
         color: 0x000000,
@@ -27,17 +27,20 @@ export default ({ group, textMeshes }) => {
         transparent: true,
         color: 0xffffff,
       }), // side
-    ]));
+    ]);
 
     if (textGeo.boundingBox) {
       textGeo.center();
     }
     animationFunctions.positionChange({
       value: -80 * index,
-      mesh: textMeshes[index],
+      mesh,
       axis: ['y'],
     });
-    group.add(textMeshes[index]);
+    const meshWrapper = new THREE.Group();
+    meshWrapper.add(mesh);
+    textMeshes.push(meshWrapper);
+    group.add(meshWrapper);
   };
 
   const showText = (text) => {
@@ -49,6 +52,7 @@ export default ({ group, textMeshes }) => {
 
     while (textMeshes.length) {
       const mesh = textMeshes.pop();
+
       group.remove(mesh);
     }
 

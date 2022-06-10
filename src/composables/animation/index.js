@@ -51,34 +51,59 @@ export default () => {
     });
   };
 
-  const animateMeshes = ({ group }) => {
-    const defaultParams = {
-      mesh: group,
-      duration: 2000,
-    };
+  const animations = {
 
-    animate({
-      ...defaultParams,
-      functionName: 'positionChange',
-      axis: ['y'],
-      from: -80,
-      to: -180,
-    });
+    type1: ({ textMeshes }) => {
+      textMeshes.forEach((wrappedMesh, index) => {
+        animationFunctions.positionChange({
+          mesh: wrappedMesh.children[0],
+          duration: 2000,
+          axis: ['z'],
+          value: 100,
+        });
 
-    animate({
-      ...defaultParams,
-      functionName: 'scaleChange',
-      pow: 0.15,
-      from: 0,
-      to: 1,
-    });
+        animate({
+          mesh: wrappedMesh,
+          duration: 2000,
+          functionName: 'rotationChange',
+          axis: ['y'],
+          from: index % 2 ? -Math.PI / 4 : Math.PI / 4,
+          to: 0,
+        });
+      });
+    },
 
-    animate({
-      ...defaultParams,
-      functionName: 'opacityChange',
-      from: 0,
-      to: 1,
-    });
+    type2: ({ group }) => {
+      animate({
+        mesh: group,
+        duration: 2000,
+        functionName: 'positionChange',
+        axis: ['y'],
+        from: -80,
+        to: -180,
+      });
+
+      animate({
+        mesh: group,
+        duration: 2000,
+        functionName: 'scaleChange',
+        pow: 0.15,
+        from: 0,
+        to: 1,
+      });
+
+      animate({
+        mesh: group,
+        duration: 2000,
+        functionName: 'opacityChange',
+        from: 0,
+        to: 1,
+      });
+    },
+  };
+
+  const animateMeshes = ({ type, ...params }) => {
+    animations[type](params);
   };
 
   return { animateMeshes };

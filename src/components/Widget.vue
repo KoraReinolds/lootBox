@@ -26,7 +26,7 @@ const textMeshes = [];
 const group = new THREE.Group();
 
 const animation = () => {
-  animateMeshes({ group });
+  animateMeshes({ group, textMeshes, type: 'type1' });
 };
 
 onMounted(() => {
