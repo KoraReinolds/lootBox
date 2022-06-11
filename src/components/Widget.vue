@@ -32,12 +32,12 @@ const animation = () => {
 onMounted(() => {
   initScene({ widget, animation });
 
-  const { showText } = useText({ group, textMeshes });
+  const { generatieTextMeshes } = useText({ group, textMeshes });
 
   scene.add(group);
 
   watch(currentAction, (value) => {
-    showText(value);
+    generatieTextMeshes(value);
 
     animation();
   });

@@ -4,6 +4,8 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 import { animationFunctions } from '@/composables/animation';
 
+const LINE_HEIGHT = 80;
+
 export default ({ group, textMeshes }) => {
   const createTextAndAddToScene = (lineText, index) => {
     const textGeo = new TextGeometry(lineText, {
@@ -32,18 +34,18 @@ export default ({ group, textMeshes }) => {
     if (textGeo.boundingBox) {
       textGeo.center();
     }
+    const meshWrapper = new THREE.Group();
     animationFunctions.positionChange({
-      value: -80 * index,
-      mesh,
+      value: -LINE_HEIGHT * index,
+      mesh: meshWrapper,
       axis: ['y'],
     });
-    const meshWrapper = new THREE.Group();
     meshWrapper.add(mesh);
     textMeshes.push(meshWrapper);
     group.add(meshWrapper);
   };
 
-  const showText = (text) => {
+  const generatieTextMeshes = (text) => {
     if (text === undefined) return;
 
     const lines = text
@@ -57,9 +59,15 @@ export default ({ group, textMeshes }) => {
     }
 
     lines.forEach(createTextAndAddToScene);
+
+    animationFunctions.positionChange({
+      value: (LINE_HEIGHT / 2) * (lines.length - 1) - 100,
+      mesh: group,
+      axis: ['y'],
+    });
   };
 
   return {
-    showText,
+    generatieTextMeshes,
   };
 };
