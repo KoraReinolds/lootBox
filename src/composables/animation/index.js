@@ -9,9 +9,16 @@ const animationFunctions = {
         mesh: child, value,
       });
     });
+
     if (!mesh.material) return;
-    // eslint-disable-next-line no-param-reassign
-    mesh.material.forEach((mat) => { mat.opacity = value; });
+
+    if (mesh.material.type === 'ShaderMaterial') {
+      // eslint-disable-next-line no-param-reassign
+      mesh.material.uniforms.opacity.value = value;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      mesh.material.forEach((mat) => { mat.opacity = value; });
+    }
   },
   scaleChange: ({ value, mesh }) => {
     mesh.scale.set(value, value, value);

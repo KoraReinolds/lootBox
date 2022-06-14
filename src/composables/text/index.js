@@ -1,14 +1,17 @@
 import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 import { animationFunctions } from '@/composables/animation';
+import vertexShader from './shaders/vertex';
+import fragmentShader from './shaders/fragment';
 
 const LINE_HEIGHT = 80;
 
 export default ({ group, textMeshes }) => {
   const createTextAndAddToScene = (lineText, index) => {
-    const textGeo = new TextGeometry(lineText, {
+    let textGeo = new TextGeometry(lineText, {
       font: new FontLoader().parse(fontSMTH),
       curveSegments: 4,
       height: 20,
@@ -16,20 +19,52 @@ export default ({ group, textMeshes }) => {
       bevelThickness: 2,
       bevelSize: 1.5,
     });
+    const tessellateModifier = new TessellateModifier(1, 1);
+
+    textGeo = tessellateModifier.modify(textGeo);
+
+    const numFaces = textGeo.attributes.position.count / 3;
+
+    const colors = new Float32Array(numFaces * 3 * 3);
+    const displacement = new Float32Array(numFaces * 3 * 3);
+
+    const color = new THREE.Color();
+
+    [...new Array(numFaces).keys()].forEach((f) => {
+      const n = 9 * f;
+
+      color.setHSL(0.2, 0.2, 0.2);
+
+      const d = 10 * (0.5 - Math.random());
+
+      [0, 1, 2].forEach((i) => {
+        colors[n + (3 * i)] = color.r;
+        colors[n + (3 * i) + 1] = color.g;
+        colors[n + (3 * i) + 2] = color.b;
+
+        displacement[n + (3 * i)] = d;
+        displacement[n + (3 * i) + 1] = d;
+        displacement[n + (3 * i) + 2] = d;
+      });
+    });
+
+    textGeo.setAttribute('customColor', new THREE.BufferAttribute(colors, 3));
+    textGeo.setAttribute('displacement', new THREE.BufferAttribute(displacement, 3));
+
+    const shaderMaterial = new THREE.ShaderMaterial({
+
+      uniforms: {
+        amplitude: { value: 0.0 },
+        opacity: { value: 0.5 },
+      },
+      vertexShader,
+      fragmentShader,
+
+    });
 
     textGeo.computeBoundingBox();
 
-    const mesh = new THREE.Mesh(textGeo, [
-      new THREE.MeshPhongMaterial({
-        transparent: true,
-        color: 0x000000,
-        flatShading: true,
-      }), // front
-      new THREE.MeshPhongMaterial({
-        transparent: true,
-        color: 0xffffff,
-      }), // side
-    ]);
+    const mesh = new THREE.Mesh(textGeo, shaderMaterial);
 
     if (textGeo.boundingBox) {
       textGeo.center();
