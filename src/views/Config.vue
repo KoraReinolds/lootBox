@@ -2,7 +2,6 @@ src/composables/steps/index.js<template>
   <div class="config">
     <Stepper />
     <div class="widget">
-      <img src="@/assets/lootbox.gif">
       <Widget class="canvas" />
       <div class="background" />
     </div>
@@ -35,9 +34,7 @@ import Widget from '@/components/Widget.vue';
       width: 500px
       height: 500px
       background: radial-gradient(
-        black 0%,
-        grey 10%,
-        lightgrey 40%,
+        lightgrey 30%,
         transparent 70%
       )
       z-index: -1
