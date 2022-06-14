@@ -33,7 +33,7 @@ export default ({ group, textMeshes }) => {
     [...new Array(numFaces).keys()].forEach((f) => {
       const n = 9 * f;
 
-      color.setHSL(0.2, 0.2, 0.2);
+      color.setHSL(1, 1, 1);
 
       const d = 10 * (0.5 - Math.random());
 
@@ -55,7 +55,7 @@ export default ({ group, textMeshes }) => {
 
       uniforms: {
         amplitude: { value: 0.0 },
-        opacity: { value: 0.5 },
+        opacity: { value: 1.0 },
       },
       vertexShader,
       fragmentShader,
