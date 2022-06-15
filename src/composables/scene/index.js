@@ -1,40 +1,27 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import useCamera from './camera';
+import useRenderer from './renderer';
 
 export default () => {
   const scene = new THREE.Scene();
-  let camera;
-  let renderer;
 
   const initScene = ({ widget, animation }) => {
-    if (!widget) {
-      console.log('widget ref is required');
-      return;
-    }
-
     const { width, height } = widget.value.getBoundingClientRect();
-    camera = new THREE.PerspectiveCamera(
-      75, width / height, 0.1, 1000,
-    );
-    camera.position.z = 500;
 
-    renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.physicallyCorrectLights = true;
+    const { camera } = useCamera({ width, height });
 
-    renderer.setSize(width, height);
+    const { renderer } = useRenderer({ width, height });
+
     widget.value.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.update();
 
-    const light = new THREE.AmbientLight(0x404040, 10);
-    scene.add(light);
-
     const animate = () => {
+      animation();
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
-      animation();
     };
 
     animate();
@@ -42,8 +29,6 @@ export default () => {
 
   return {
     scene,
-    renderer,
-    camera,
     initScene,
   };
 };
