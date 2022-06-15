@@ -12,12 +12,12 @@ import {
   watch,
   onMounted,
 } from 'vue';
-import useText from '@/composables/text';
+import useText from '@/composables/scene/text';
 import useScene from '@/composables/scene';
 import useActions from '@/composables/actions';
-import useAnamation from '@/composables/animation';
+import useAnamation from '@/composables/scene/animation';
 import * as THREE from 'three';
-import getTesselatedMesh from '@/composables/text/shaders';
+import getTesselatedMesh from '@/composables/scene/text/shaders';
 import modelLoader from '@/composables/scene/modelLoader';
 
 const widget = ref(document.createElement('div'));
@@ -28,7 +28,7 @@ const textMeshes = [];
 const group = new THREE.Group();
 
 const animation = () => {
-  animateMeshes({ group, textMeshes, type: 'type1' });
+  animateMeshes({ group, textMeshes, type: 'type2' });
 };
 
 onMounted(() => {

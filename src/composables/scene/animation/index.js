@@ -1,3 +1,7 @@
+import config from '@/composables/scene/config';
+
+const { textHeight } = config;
+
 const animationFunctions = {
   positionChange: ({ value, mesh, axis }) => {
     // eslint-disable-next-line no-param-reassign
@@ -127,8 +131,8 @@ export default () => {
           mesh: wrappedMesh,
           positionChange: {
             params: { axis: ['y'], delay },
-            0: -80 * index - 100,
-            2000: -80 * index,
+            0: -textHeight * index - 100,
+            2000: -textHeight * index,
           },
           scaleChange: {
             params: { pow: 0.15, delay },
