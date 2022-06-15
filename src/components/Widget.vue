@@ -18,6 +18,7 @@ import useActions from '@/composables/actions';
 import useAnamation from '@/composables/animation';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import getTesselatedMesh from '@/composables/text/shaders';
 
 const widget = ref(document.createElement('div'));
 const { scene, initScene } = useScene();
@@ -36,21 +37,14 @@ onMounted(() => {
 
   const {
     generatieTextMeshes,
-    tesselateGeometry,
-    getShaderMaterial,
   } = useText({ group, textMeshes });
 
   loader.load(
     'lootbox.glb',
     (gltf) => {
-      console.log();
-
-      const mesh = new THREE.Mesh(
-        tesselateGeometry(gltf.scene.children[2].geometry),
-        getShaderMaterial(),
+      scene.add(
+        getTesselatedMesh(gltf.scene.children[2].geometry),
       );
-
-      scene.add(mesh);
     },
     (xhr) => {
       console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
