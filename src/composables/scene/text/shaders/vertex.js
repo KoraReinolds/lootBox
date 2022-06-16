@@ -1,5 +1,6 @@
 export default `
   uniform float amplitude;
+  uniform vec3 uColor;
 
   attribute vec3 customColor;
   attribute vec3 displacement;
@@ -10,7 +11,7 @@ export default `
   void main() {
 
     vNormal = normal;
-    vColor = customColor;
+    vColor = uColor;
 
     vec3 newPosition = position + normal * amplitude * displacement;
     gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );

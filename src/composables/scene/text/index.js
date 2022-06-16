@@ -14,7 +14,7 @@ export default ({ group, textMeshes }) => {
 
     if (textGeo.boundingBox) textGeo.center();
 
-    const mesh = getTesselatedMesh(textGeo);
+    const mesh = getTesselatedMesh({ geometry: textGeo, color: '0x141414' });
 
     const meshWrapper = new THREE.Group();
     animationFunctions.positionChange({

@@ -3,10 +3,11 @@ import * as THREE from 'three';
 import vertexShader from './vertex';
 import fragmentShader from './fragment';
 
-const getShaderMaterial = () => new THREE.ShaderMaterial({
+const getShaderMaterial = ({ color } = {}) => new THREE.ShaderMaterial({
   uniforms: {
     amplitude: { value: 0.0 },
     opacity: { value: 1.0 },
+    uColor: { value: new THREE.Color(+color || 0x000000) },
   },
   vertexShader,
   fragmentShader,
@@ -48,7 +49,7 @@ const tesselateGeometry = (geo) => {
   return geometry;
 };
 
-export default (geometry) => new THREE.Mesh(
+export default ({ geometry, ...params }) => new THREE.Mesh(
   tesselateGeometry(geometry),
-  getShaderMaterial(),
+  getShaderMaterial(params),
 );

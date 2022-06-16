@@ -40,7 +40,8 @@ onMounted(() => {
 
   modelLoader('lootbox.glb').then((gltf) => {
     const { geometry } = gltf.scene.children[2];
-    scene.add(getTesselatedMesh(geometry));
+    const mesh = getTesselatedMesh({ geometry, color: '0xf10161' });
+    scene.add(mesh);
   });
 
   scene.add(group);
