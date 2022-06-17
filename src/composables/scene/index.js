@@ -10,6 +10,7 @@ export default () => {
     const { width, height } = widget.value.getBoundingClientRect();
 
     const { camera } = useCamera({ width, height });
+    scene.add(camera);
 
     const { renderer } = useRenderer({ width, height });
 

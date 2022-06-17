@@ -15,7 +15,7 @@ import {
 import useText from '@/composables/scene/text';
 import useScene from '@/composables/scene';
 import useActions from '@/composables/actions';
-import useAnamation from '@/composables/scene/animation';
+import useAnamation, { animationFunctions } from '@/composables/scene/animation';
 import * as THREE from 'three';
 import getTesselatedMesh from '@/composables/scene/text/shaders';
 import modelLoader from '@/composables/scene/modelLoader';
@@ -28,19 +28,25 @@ const textMeshes = [];
 const group = new THREE.Group();
 
 const animation = () => {
-  animateMeshes({ group, textMeshes, type: 'type2' });
+  animateMeshes({
+    scene, group, textMeshes, type: 'type1',
+  });
 };
 
 onMounted(() => {
   initScene({ widget, animation });
 
-  const {
-    generatieTextMeshes,
-  } = useText({ group, textMeshes });
+  const { generatieTextMeshes } = useText({ group, textMeshes });
 
   modelLoader('lootbox.glb').then((gltf) => {
     const { geometry } = gltf.scene.children[2];
     const mesh = getTesselatedMesh({ geometry, color: '0xf10161' });
+    animationFunctions.rotationChange({
+      mesh, value: Math.PI / 6, axis: ['x'],
+    });
+    animationFunctions.rotationChange({
+      mesh, value: Math.PI / 5, axis: ['y'],
+    });
     scene.add(mesh);
   });
 

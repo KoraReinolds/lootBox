@@ -1,6 +1,7 @@
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 
+const cameraDistance = 170;
 const textHeight = 40;
 const textParams = {
   font: new FontLoader().parse(fontSMTH),
@@ -12,6 +13,7 @@ const textParams = {
 };
 
 export default {
+  cameraDistance,
   textHeight,
   textParams,
 };

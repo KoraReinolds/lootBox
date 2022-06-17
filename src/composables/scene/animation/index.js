@@ -1,9 +1,9 @@
 import config from '@/composables/scene/config';
 
-const { textHeight } = config;
+const { textHeight, cameraDistance } = config;
 
 const animationFunctions = {
-  positionChange: ({ value, mesh, axis }) => {
+  positionChange: ({ value, mesh, axis = ['x'] }) => {
     // eslint-disable-next-line no-param-reassign
     axis.forEach((dir) => { mesh.position[dir] = value; });
   },
@@ -66,7 +66,13 @@ export default () => {
         animationFunctions.opacityChange({
           mesh, value: 0,
         });
+        animationFunctions.positionChange({
+          mesh, value: 9999,
+        });
       } else {
+        animationFunctions.positionChange({
+          mesh, value: 0,
+        });
         let currentGapIndex = +gaps.findIndex(
           (time) => +time > timeFromStart,
         );
@@ -97,7 +103,30 @@ export default () => {
 
   const animations = {
 
-    type1: ({ textMeshes }) => {
+    type1: ({ group, scene }) => {
+      const camera = scene.children[0];
+
+      animationFunctions.positionChange({
+        mesh: group,
+        axis: ['x', 'y', 'z'],
+        value: 0,
+      });
+      animationFunctions.scaleChange({
+        mesh: group,
+        value: 0.1,
+      });
+
+      animate({
+        mesh: camera,
+        positionChange: {
+          params: { axis: ['z'] },
+          0: cameraDistance,
+          2000: 30,
+        },
+      });
+    },
+
+    type2: ({ textMeshes }) => {
       textMeshes.forEach((wrappedMesh, index) => {
         animationFunctions.positionChange({
           mesh: wrappedMesh.children[0],
@@ -123,7 +152,7 @@ export default () => {
       });
     },
 
-    type2: ({ textMeshes }) => {
+    type3: ({ textMeshes }) => {
       textMeshes.forEach((wrappedMesh, index) => {
         const delay = index * 300;
 
