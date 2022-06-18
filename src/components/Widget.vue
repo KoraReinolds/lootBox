@@ -29,7 +29,7 @@ const group = new THREE.Group();
 
 const animation = () => {
   animateMeshes({
-    scene, group, textMeshes, type: 'type1',
+    scene, group, textMeshes, type: 'type2',
   });
 };
 

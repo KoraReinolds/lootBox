@@ -126,12 +126,31 @@ export default () => {
       });
     },
 
-    type2: ({ textMeshes }) => {
+    type2: ({ scene, group, textMeshes }) => {
+      const camera = scene.children[0];
+
+      animationFunctions.positionChange({
+        mesh: camera,
+        value: 200,
+        axis: ['z'],
+      });
+
+      animationFunctions.positionChange({
+        mesh: group,
+        value: 0,
+        axis: ['x', 'y'],
+      });
+
+      animationFunctions.scaleChange({
+        mesh: group,
+        value: 0.6,
+      });
+
       textMeshes.forEach((wrappedMesh, index) => {
         animationFunctions.positionChange({
           mesh: wrappedMesh.children[0],
           axis: ['z'],
-          value: 100,
+          value: 150,
         });
 
         const delay = index * 300;
@@ -140,7 +159,7 @@ export default () => {
           mesh: wrappedMesh,
           rotationChange: {
             params: { axis: ['y'], delay },
-            0: index % 2 ? -Math.PI / 4 : Math.PI / 4,
+            0: index % 2 ? -Math.PI : Math.PI,
             2000: 0,
           },
           opacityChange: {
@@ -152,7 +171,24 @@ export default () => {
       });
     },
 
-    type3: ({ textMeshes }) => {
+    type3: ({ group, textMeshes }) => {
+      animationFunctions.positionChange({
+        mesh: group,
+        value: 0,
+        axis: ['x', 'y'],
+      });
+
+      animationFunctions.positionChange({
+        mesh: group,
+        value: 100,
+        axis: ['z'],
+      });
+
+      animationFunctions.scaleChange({
+        mesh: group,
+        value: 0.3,
+      });
+
       textMeshes.forEach((wrappedMesh, index) => {
         const delay = index * 300;
 
