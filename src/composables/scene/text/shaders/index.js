@@ -3,8 +3,9 @@ import * as THREE from 'three';
 import vertexShader from './vertex';
 import fragmentShader from './fragment';
 
-const getShaderMaterial = ({ color } = {}) => new THREE.ShaderMaterial({
+const getShaderMaterial = ({ color, isText } = {}) => new THREE.ShaderMaterial({
   uniforms: {
+    isText: { value: isText ? 1.0 : 0.0 },
     amplitude: { value: 0.0 },
     opacity: { value: 1.0 },
     uColor: { value: new THREE.Color(+color || 0x000000) },

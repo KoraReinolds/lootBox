@@ -14,7 +14,7 @@ export default ({ group, textMeshes }) => {
 
     if (textGeo.boundingBox) textGeo.center();
 
-    const mesh = getTesselatedMesh({ geometry: textGeo, color: '0x141414' });
+    const mesh = getTesselatedMesh({ geometry: textGeo, color: '0x141414', isText: true });
 
     const meshWrapper = new THREE.Group();
     animationFunctions.positionChange({
@@ -31,7 +31,7 @@ export default ({ group, textMeshes }) => {
     if (text === undefined) return;
 
     const lines = text
-      .match(/.{5,10}? |.*/g)
+      .match(/.{4,10}? |.*/g)
       .filter((line) => line);
 
     while (textMeshes.length) {
