@@ -1,7 +1,7 @@
 import generateModule from '@/store/moduleGenerator';
 
 const defaultAction = {
-  value: '',
+  value: 'some default value here',
 };
 
 export default generateModule({

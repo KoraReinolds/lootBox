@@ -15,6 +15,7 @@ import {
 import useText from '@/composables/scene/text';
 import useScene from '@/composables/scene';
 import useActions from '@/composables/actions';
+import useSteps from '@/composables/steps';
 import useAnamation, { animationFunctions } from '@/composables/scene/animation';
 import * as THREE from 'three';
 import getTesselatedMesh from '@/composables/scene/text/shaders';
@@ -22,18 +23,21 @@ import modelLoader from '@/composables/scene/modelLoader';
 
 const widget = ref(document.createElement('div'));
 const { scene, initScene } = useScene();
-const { currentAction } = useActions();
-const { animateMeshes } = useAnamation();
+const { currentAction, setActionIndex } = useActions();
+const { animations } = useAnamation();
 const textMeshes = [];
 const group = new THREE.Group();
+const { currentStep, changeStep } = useSteps();
 
 const animation = () => {
-  animateMeshes({
-    scene, group, textMeshes, type: 'type2',
+  animations[currentStep.value.name]({
+    scene, group, textMeshes,
   });
 };
 
 onMounted(() => {
+  changeStep('common');
+
   initScene({ widget, animation });
 
   const { generatieTextMeshes } = useText({ group, textMeshes });
@@ -57,6 +61,8 @@ onMounted(() => {
 
     animation();
   });
+
+  setActionIndex(0);
 });
 
 </script>

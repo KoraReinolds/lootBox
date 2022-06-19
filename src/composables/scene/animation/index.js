@@ -103,7 +103,7 @@ export default () => {
 
   const animations = {
 
-    type1: ({ group, scene }) => {
+    epic: ({ group, scene }) => {
       const camera = scene.children[0];
 
       animationFunctions.positionChange({
@@ -126,7 +126,7 @@ export default () => {
       });
     },
 
-    type2: ({ scene, group, textMeshes }) => {
+    rare: ({ scene, group, textMeshes }) => {
       const camera = scene.children[0];
 
       animationFunctions.positionChange({
@@ -171,7 +171,7 @@ export default () => {
       });
     },
 
-    type3: ({ group, textMeshes }) => {
+    common: ({ group, textMeshes }) => {
       animationFunctions.positionChange({
         mesh: group,
         value: 0,
@@ -214,9 +214,5 @@ export default () => {
     },
   };
 
-  const animateMeshes = ({ type, ...params }) => {
-    animations[type](params);
-  };
-
-  return { animateMeshes };
+  return { animations, resetScene };
 };
