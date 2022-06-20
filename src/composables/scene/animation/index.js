@@ -38,6 +38,57 @@ export { animationFunctions };
 export default () => {
   let start = new Date();
 
+  const resetScene = ({ scene, textMeshes, group }) => {
+    const camera = scene.children[0];
+    const meshes = [scene, group, ...textMeshes];
+
+    start = new Date();
+    camera.position.set(0, 0, cameraDistance);
+
+    meshes.forEach((mesh) => {
+      animationFunctions.scaleChange({
+        mesh, value: 1,
+      });
+      animationFunctions.positionChange({
+        mesh,
+        value: 0,
+        axis: ['x', 'y', 'z'],
+      });
+      animationFunctions.opacityChange({
+        mesh,
+        value: 1,
+      });
+    });
+
+    textMeshes.forEach((wrappedMesh, index) => {
+      [wrappedMesh.children[0], wrappedMesh].forEach((mesh) => {
+        animationFunctions.positionChange({
+          mesh,
+          axis: ['x', 'y', 'z'],
+          value: 0,
+        });
+        animationFunctions.rotationChange({
+          mesh,
+          axis: ['x', 'y', 'z'],
+          value: 0,
+        });
+        animationFunctions.opacityChange({
+          mesh,
+          value: 1,
+        });
+        animationFunctions.scaleChange({
+          mesh,
+          value: 1,
+        });
+      });
+      animationFunctions.positionChange({
+        mesh: wrappedMesh,
+        axis: ['y'],
+        value: -textHeight * index,
+      });
+    });
+  };
+
   const powFunction = ({
     duration, from, to, pow = 0.3, delay = 0,
   }) => {
@@ -103,116 +154,127 @@ export default () => {
 
   const animations = {
 
-    epic: ({ group, scene }) => {
-      const camera = scene.children[0];
+    epic: {
+      initScene: (params) => {
+        resetScene(params);
 
-      animationFunctions.positionChange({
-        mesh: group,
-        axis: ['x', 'y', 'z'],
-        value: 0,
-      });
-      animationFunctions.scaleChange({
-        mesh: group,
-        value: 0.1,
-      });
+        const { group } = params;
 
-      animate({
-        mesh: camera,
-        positionChange: {
-          params: { axis: ['z'] },
-          0: cameraDistance,
-          2000: 30,
-        },
-      });
-    },
-
-    rare: ({ scene, group, textMeshes }) => {
-      const camera = scene.children[0];
-
-      animationFunctions.positionChange({
-        mesh: camera,
-        value: 200,
-        axis: ['z'],
-      });
-
-      animationFunctions.positionChange({
-        mesh: group,
-        value: 0,
-        axis: ['x', 'y'],
-      });
-
-      animationFunctions.scaleChange({
-        mesh: group,
-        value: 0.6,
-      });
-
-      textMeshes.forEach((wrappedMesh, index) => {
         animationFunctions.positionChange({
-          mesh: wrappedMesh.children[0],
-          axis: ['z'],
-          value: 150,
+          mesh: group,
+          axis: ['x', 'y', 'z'],
+          value: 0,
         });
-
-        const delay = index * 300;
+        animationFunctions.scaleChange({
+          mesh: group,
+          value: 0.1,
+        });
+      },
+      moveMeshes: ({ scene }) => {
+        const camera = scene.children[0];
 
         animate({
-          mesh: wrappedMesh,
-          rotationChange: {
-            params: { axis: ['y'], delay },
-            0: index % 2 ? -Math.PI : Math.PI,
-            2000: 0,
-          },
-          opacityChange: {
-            params: { delay },
-            0: 0,
-            2000: 1,
+          mesh: camera,
+          positionChange: {
+            params: { axis: ['z'], pow: 1 },
+            0: 300,
+            2000: 30,
+            4000: 30,
           },
         });
-      });
+      },
     },
 
-    common: ({ group, textMeshes }) => {
-      animationFunctions.positionChange({
-        mesh: group,
-        value: 0,
-        axis: ['x', 'y'],
-      });
+    rare: {
+      initScene: (params) => {
+        const { textMeshes, scene, group } = params;
+        const camera = scene.children[0];
 
-      animationFunctions.positionChange({
-        mesh: group,
-        value: 100,
-        axis: ['z'],
-      });
+        resetScene(params);
 
-      animationFunctions.scaleChange({
-        mesh: group,
-        value: 0.3,
-      });
-
-      textMeshes.forEach((wrappedMesh, index) => {
-        const delay = index * 300;
-
-        animate({
-          mesh: wrappedMesh,
-          positionChange: {
-            params: { axis: ['y'], delay },
-            0: -textHeight * index - 100,
-            2000: -textHeight * index,
-          },
-          scaleChange: {
-            params: { pow: 0.15, delay },
-            0: 0,
-            2000: 1,
-          },
-          opacityChange: {
-            params: { delay },
-            0: 0,
-            2000: 1,
-          },
+        animationFunctions.positionChange({
+          mesh: camera,
+          value: 200,
+          axis: ['z'],
         });
-      });
+
+        animationFunctions.scaleChange({
+          mesh: group,
+          value: 0.6,
+        });
+
+        textMeshes.forEach((wrappedMesh) => {
+          animationFunctions.positionChange({
+            mesh: wrappedMesh.children[0],
+            axis: ['z'],
+            value: 150,
+          });
+        });
+      },
+      moveMeshes: ({ textMeshes }) => {
+        textMeshes.forEach((wrappedMesh, index) => {
+          const delay = index * 300;
+
+          animate({
+            mesh: wrappedMesh,
+            rotationChange: {
+              params: { axis: ['y'], delay },
+              0: index % 2 ? -Math.PI : Math.PI,
+              2000: 0,
+            },
+            opacityChange: {
+              params: { delay },
+              0: 0,
+              2000: 1,
+            },
+          });
+        });
+      },
+    },
+
+    common: {
+      initScene: (params) => {
+        resetScene(params);
+
+        const { group } = params;
+
+        animationFunctions.positionChange({
+          mesh: group,
+          value: 100,
+          axis: ['z'],
+        });
+
+        animationFunctions.scaleChange({
+          mesh: group,
+          value: 0.3,
+        });
+      },
+      moveMeshes: ({ textMeshes }) => {
+        textMeshes.forEach((wrappedMesh, index) => {
+          const delay = index * 300;
+
+          animate({
+            mesh: wrappedMesh,
+            positionChange: {
+              params: { axis: ['y'], delay },
+              0: -textHeight * index - 100,
+              2000: -textHeight * index,
+            },
+            scaleChange: {
+              params: { pow: 0.15, delay },
+              0: 0,
+              2000: 1,
+            },
+            opacityChange: {
+              params: { delay },
+              0: 0,
+              2000: 1,
+            },
+          });
+        });
+      },
     },
   };
 
-  return { animations, resetScene };
+  return { animations };
 };

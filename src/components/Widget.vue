@@ -30,7 +30,7 @@ const group = new THREE.Group();
 const { currentStep, changeStep } = useSteps();
 
 const animation = () => {
-  animations[currentStep.value.name]({
+  animations[currentStep.value.name].moveMeshes({
     scene, group, textMeshes,
   });
 };
@@ -61,6 +61,12 @@ onMounted(() => {
 
     animation();
   });
+
+  watch(currentStep, (value) => {
+    animations[value.name].initScene({
+      scene, group, textMeshes,
+    });
+  }, { immediate: true });
 
   setActionIndex(0);
 });

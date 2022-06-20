@@ -1,13 +1,12 @@
 import * as THREE from 'three';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
-import { animationFunctions } from '@/composables/scene/animation';
 import config from '@/composables/scene/config';
 import getTesselatedMesh from './shaders';
 
-const { textHeight, textParams } = config;
+const { textParams } = config;
 
 export default ({ group, textMeshes }) => {
-  const createTextAndAddToScene = (lineText, index) => {
+  const createTextAndAddToScene = (lineText) => {
     const textGeo = new TextGeometry(lineText, textParams);
 
     textGeo.computeBoundingBox();
@@ -17,11 +16,6 @@ export default ({ group, textMeshes }) => {
     const mesh = getTesselatedMesh({ geometry: textGeo, color: '0x141414', isText: true });
 
     const meshWrapper = new THREE.Group();
-    animationFunctions.positionChange({
-      value: -textHeight * index,
-      mesh: meshWrapper,
-      axis: ['y'],
-    });
     meshWrapper.add(mesh);
     textMeshes.push(meshWrapper);
     group.add(meshWrapper);
@@ -41,12 +35,6 @@ export default ({ group, textMeshes }) => {
     }
 
     lines.forEach(createTextAndAddToScene);
-
-    animationFunctions.positionChange({
-      value: (textHeight / 2) * (lines.length - 1) - 100,
-      mesh: group,
-      axis: ['y'],
-    });
   };
 
   return {
