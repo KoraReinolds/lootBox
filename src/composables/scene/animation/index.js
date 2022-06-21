@@ -1,6 +1,8 @@
 import config from '@/composables/scene/config';
 
-const { textHeight, cameraDistance } = config;
+const {
+  textHeight, cameraDistance, textDistance,
+} = config;
 
 const animationFunctions = {
   positionChange: ({ value, mesh, axis = ['x'] }) => {
@@ -167,7 +169,7 @@ export default () => {
         });
         animationFunctions.scaleChange({
           mesh: group,
-          value: 0.1,
+          value: 0.5,
         });
       },
       moveMeshes: ({ scene }) => {
@@ -177,7 +179,7 @@ export default () => {
           mesh: camera,
           positionChange: {
             params: { axis: ['z'], pow: 1 },
-            0: 300,
+            0: cameraDistance,
             2000: 30,
             4000: 30,
           },
@@ -187,27 +189,14 @@ export default () => {
 
     rare: {
       initScene: (params) => {
-        const { textMeshes, scene, group } = params;
-        const camera = scene.children[0];
-
+        const { textMeshes } = params;
         resetScene(params);
-
-        animationFunctions.positionChange({
-          mesh: camera,
-          value: 200,
-          axis: ['z'],
-        });
-
-        animationFunctions.scaleChange({
-          mesh: group,
-          value: 0.6,
-        });
 
         textMeshes.forEach((wrappedMesh) => {
           animationFunctions.positionChange({
             mesh: wrappedMesh.children[0],
             axis: ['z'],
-            value: 150,
+            value: textDistance,
           });
         });
       },
@@ -240,13 +229,13 @@ export default () => {
 
         animationFunctions.positionChange({
           mesh: group,
-          value: 100,
+          value: textDistance,
           axis: ['z'],
         });
 
         animationFunctions.scaleChange({
           mesh: group,
-          value: 0.3,
+          value: 1,
         });
       },
       moveMeshes: ({ textMeshes }) => {
@@ -257,8 +246,8 @@ export default () => {
             mesh: wrappedMesh,
             positionChange: {
               params: { axis: ['y'], delay },
-              0: -textHeight * index - 100,
-              2000: -textHeight * index,
+              0: -(textHeight / 2) * index - 100,
+              2000: -(textHeight / 2) * index,
             },
             scaleChange: {
               params: { pow: 0.15, delay },
