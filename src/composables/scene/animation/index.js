@@ -91,15 +91,6 @@ export default () => {
     });
   };
 
-  const powFunction = ({
-    duration, from, to, pow = 0.3, delay = 0,
-  }) => {
-    const delta = new Date() - start - delay;
-    const ratio = delta / duration;
-
-    return from + (to - from) * (ratio ** pow);
-  };
-
   const animate = ({
     mesh, ...functions
   }) => {
@@ -107,7 +98,7 @@ export default () => {
 
     Object.entries(functions).forEach(([functionName, { params = {}, ...animationData }]) => {
       const animationFunction = animationFunctions[functionName];
-      const { delay = 0 } = params;
+      const { delay = 0, pow = 1 } = params;
       const gaps = Object.keys(animationData);
       const values = Object.values(animationData);
 
@@ -146,9 +137,13 @@ export default () => {
           from,
           duration,
         };
+
+        const delta = timeFromStart - delay - gaps[currentGapIndex - 1];
+        const ratio = delta / duration;
+
         animationFunction({
           ...functionParams,
-          value: powFunction(functionParams),
+          value: from + (to - from) * (ratio ** pow),
         });
       }
     });
@@ -180,6 +175,7 @@ export default () => {
           positionChange: {
             params: { axis: ['z'], pow: 1 },
             0: cameraDistance,
+            500: cameraDistance - 20,
             2000: 30,
             4000: 30,
           },
