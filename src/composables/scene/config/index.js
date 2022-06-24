@@ -4,6 +4,8 @@ import fontSMTH from '@/assets/fonts/Ruslan_Display_Regular.typeface.json';
 const cameraDistance = 170;
 const textDistance = 100;
 const textHeight = 10;
+const modelXRotation = Math.PI / 6;
+const modelYRotation = Math.PI / 5;
 const textParams = {
   font: new FontLoader().parse(fontSMTH),
   curveSegments: 4,
@@ -18,4 +20,6 @@ export default {
   textDistance,
   textHeight,
   textParams,
+  modelXRotation,
+  modelYRotation,
 };

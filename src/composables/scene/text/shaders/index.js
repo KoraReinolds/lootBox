@@ -14,8 +14,8 @@ const getShaderMaterial = ({ color, isText } = {}) => new THREE.ShaderMaterial({
   fragmentShader,
 });
 
-const tesselateGeometry = (geo) => {
-  const tessellateModifier = new TessellateModifier(1, 1);
+const tesselateGeometry = (geo, parts = [1, 1]) => {
+  const tessellateModifier = new TessellateModifier(...parts);
 
   const geometry = tessellateModifier.modify(geo);
 
@@ -50,7 +50,7 @@ const tesselateGeometry = (geo) => {
   return geometry;
 };
 
-export default ({ geometry, ...params }) => new THREE.Mesh(
-  tesselateGeometry(geometry),
+export default ({ geometry, parts, ...params }) => new THREE.Mesh(
+  tesselateGeometry(geometry, parts),
   getShaderMaterial(params),
 );

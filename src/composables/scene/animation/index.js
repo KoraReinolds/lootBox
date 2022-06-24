@@ -1,10 +1,18 @@
 import config from '@/composables/scene/config';
 
 const {
-  textHeight, cameraDistance, textDistance,
+  textHeight,
+  cameraDistance,
+  textDistance,
+  modelXRotation,
+  modelYRotation,
 } = config;
 
 const animationFunctions = {
+  amplitudeChange: ({ value, mesh }) => {
+    // eslint-disable-next-line no-param-reassign
+    mesh.material.uniforms.amplitude.value = value;
+  },
   positionChange: ({ value, mesh, axis = ['x'] }) => {
     // eslint-disable-next-line no-param-reassign
     axis.forEach((dir) => { mesh.position[dir] = value; });
@@ -43,8 +51,17 @@ export default () => {
   const resetScene = ({ scene, textMeshes, group }) => {
     const camera = scene.children[0];
     const meshes = [scene, group, ...textMeshes];
+    const model = scene.children[2];
 
     start = new Date();
+
+    animationFunctions.rotationChange({
+      mesh: model, value: modelXRotation, axis: ['x'],
+    });
+    animationFunctions.rotationChange({
+      mesh: model, value: modelYRotation, axis: ['y'],
+    });
+
     camera.position.set(0, 0, cameraDistance);
 
     meshes.forEach((mesh) => {
@@ -150,6 +167,82 @@ export default () => {
   };
 
   const animations = {
+
+    legendary: {
+      initScene: (params) => {
+        resetScene(params);
+
+        const { group } = params;
+
+        animationFunctions.positionChange({
+          mesh: group,
+          axis: ['x', 'y', 'z'],
+          value: 0,
+        });
+      },
+      moveMeshes: ({ scene, group, textMeshes }) => {
+        const model = scene.children[2];
+
+        animate({
+          mesh: model,
+          rotationChange: {
+            params: { axis: ['y'] },
+            0: modelYRotation,
+            2000: modelYRotation + Math.PI / 6,
+            2500: Math.PI,
+            6000: Math.PI + Math.PI / 12,
+          },
+          amplitudeChange: {
+            0: 0,
+            500: 0.1,
+            1000: 3,
+            2100: 7,
+            3000: 1000,
+            4000: 1000,
+            6000: 1000,
+          },
+          scaleChange: {
+            0: 1,
+            2100: 0.8,
+            4000: 0.8,
+            6000: 0.8,
+          },
+        });
+
+        animate({
+          mesh: group,
+          scaleChange: {
+            0: 0.5,
+            2100: 1,
+            2200: 3,
+            4000: 3,
+            6000: 3,
+          },
+          rotationChange: {
+            params: { axis: ['y'] },
+            0: -Math.PI / 6,
+            2200: -Math.PI / 6,
+            3000: 0,
+            6000: Math.PI / 18,
+          },
+        });
+
+        textMeshes.forEach((wrappedMesh) => {
+          animate({
+            mesh: wrappedMesh.children[0],
+            amplitudeChange: {
+              0: 1000,
+              500: 1000,
+              1000: 10,
+              2100: 7,
+              3000: 0.3,
+              4000: 0,
+              6000: 0,
+            },
+          });
+        });
+      },
+    },
 
     epic: {
       initScene: (params) => {
