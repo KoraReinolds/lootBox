@@ -124,9 +124,6 @@ export default () => {
       }
 
       if (timeFromStart < delay) {
-        animationFunctions.opacityChange({
-          mesh, value: 0,
-        });
         animationFunctions.positionChange({
           mesh, value: 9999,
         });
@@ -135,7 +132,7 @@ export default () => {
           mesh, value: 0,
         });
         let currentGapIndex = +gaps.findIndex(
-          (time) => +time > timeFromStart,
+          (time) => +time > timeFromStart - delay,
         );
 
         if (currentGapIndex === -1) {
@@ -145,22 +142,22 @@ export default () => {
 
         const to = values[currentGapIndex];
         const from = values[currentGapIndex - 1];
-        const duration = +gaps[currentGapIndex] - +gaps[currentGapIndex - 1];
 
         const functionParams = {
           ...params,
           mesh,
           to,
           from,
-          duration,
         };
 
-        const delta = timeFromStart - delay - gaps[currentGapIndex - 1];
-        const ratio = delta / duration;
+        const duration = +gaps[currentGapIndex] - +gaps[currentGapIndex - 1];
+        const delta = timeFromStart - gaps[currentGapIndex - 1] - delay;
+        const ratio = Math.max(0, delta) / duration;
+        const value = from + (to - from) * (ratio ** pow);
 
         animationFunction({
           ...functionParams,
-          value: from + (to - from) * (ratio ** pow),
+          value,
         });
       }
     });
@@ -270,7 +267,9 @@ export default () => {
             0: cameraDistance,
             500: cameraDistance - 20,
             2000: 30,
-            4000: 30,
+            3000: 32,
+            5000: 28,
+            6000: 30,
           },
         });
       },
@@ -291,19 +290,22 @@ export default () => {
       },
       moveMeshes: ({ textMeshes }) => {
         textMeshes.forEach((wrappedMesh, index) => {
-          const delay = index * 300;
+          const delay = index * 200;
 
           animate({
             mesh: wrappedMesh,
             rotationChange: {
               params: { axis: ['y'], delay },
               0: index % 2 ? -Math.PI : Math.PI,
-              2000: 0,
+              1000: (index % 2 ? -Math.PI : Math.PI) / 16,
+              2000: (index % 2 ? -Math.PI : Math.PI) / 32,
+              6000: (index % 2 ? Math.PI : -Math.PI) / 128,
             },
             opacityChange: {
               params: { delay },
               0: 0,
-              2000: 1,
+              1000: 1,
+              6000: 1,
             },
           });
         });
@@ -329,24 +331,22 @@ export default () => {
       },
       moveMeshes: ({ textMeshes }) => {
         textMeshes.forEach((wrappedMesh, index) => {
-          const delay = index * 300;
+          const delay = index * 200;
 
           animate({
             mesh: wrappedMesh,
             positionChange: {
               params: { axis: ['y'], delay },
               0: -(textHeight / 2) * index - 100,
-              2000: -(textHeight / 2) * index,
+              1000: -(textHeight) * index - 5,
+              4000: -(textHeight) * index - 2,
+              6000: -(textHeight) * index,
             },
             scaleChange: {
-              params: { pow: 0.15, delay },
-              0: 0,
-              2000: 1,
-            },
-            opacityChange: {
               params: { delay },
               0: 0,
-              2000: 1,
+              1000: 1,
+              6000: 1,
             },
           });
         });
