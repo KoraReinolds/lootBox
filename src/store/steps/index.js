@@ -41,7 +41,7 @@ export default generateModule({
   namespaced: true,
 
   state: {
-    currentStep: undefined,
+    currentStep: 'common',
   },
 
   getters: {

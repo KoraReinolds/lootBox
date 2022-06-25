@@ -5,7 +5,7 @@ export default generateModule({
   namespaced: true,
 
   state: {
-    lootBoxIndex: undefined,
+    lootBoxIndex: 0,
   },
 
   getters: {

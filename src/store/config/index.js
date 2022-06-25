@@ -19,8 +19,11 @@ export default generateModule({
       try {
         const config = JSON.parse(configString);
 
-        commit('data', config);
-        commit('lastSavedData', config);
+        if (Object.keys(config).length) {
+          commit('data', config);
+          commit('lastSavedData', config);
+        }
+
         dispatch('lootBox/lootBoxIndex', 0, { root: true });
 
         const avalableSteps = rootGetters['lootBox/current/availableSteps'];

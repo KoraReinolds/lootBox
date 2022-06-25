@@ -1,9 +1,8 @@
-src/composables/steps/index.js<template>
+<template>
   <div class="config">
     <Stepper />
     <div class="widget">
       <Widget class="canvas" />
-      <div class="background" />
     </div>
     <ActionList />
   </div>
@@ -27,17 +26,6 @@ import Widget from '@/components/Widget.vue';
   .widget
     position: relative
     width: 500px
-
-    .background
-      position: absolute
-      top: 0
-      width: 500px
-      height: 500px
-      background: radial-gradient(
-        lightgrey 30%,
-        transparent 70%
-      )
-      z-index: -1
 
     img
       position: absolute
