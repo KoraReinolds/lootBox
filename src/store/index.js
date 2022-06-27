@@ -7,6 +7,7 @@ import actions from './actions';
 import rarity from './rarity';
 import general from './general';
 import cost from './cost';
+import products from './products';
 
 export default createStore(
   generateModule({
@@ -30,6 +31,7 @@ export default createStore(
       rarity,
       general,
       cost,
+      products,
     },
   }),
 );
