@@ -15,8 +15,8 @@ export default createStore(
     },
     getters: {
       rarity_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.rarityConfig || {},
-      general_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.generalConfig || {},
-      cost_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.costConfig || {},
+      general_: (state, getters, rootState, rootGetters) => rootGetters['lootBox/current_']?.general.generalConfig || {},
+      cost_: (state, getters, rootState, rootGetters) => rootGetters['lootBox/current_']?.cost.costConfig || {},
       actions_: (state, getters, rootState, rootGetters) => rootGetters['steps/current_']?.costConfig || {},
     },
     mutations: {

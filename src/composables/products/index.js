@@ -18,5 +18,9 @@ export default () => {
 
   const bitsCost = computed(() => store.getters['products/bitsCost']);
 
-  return { bitsCost };
+  const currentCost = computed(() => store.getters['cost/bitsCost']);
+
+  const changeCost = (cost) => store.dispatch('cost/bitsCost', cost);
+
+  return { currentCost, bitsCost, changeCost };
 };

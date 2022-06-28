@@ -3,6 +3,12 @@
     <Stepper />
     <div class="widget">
       <Widget class="canvas" />
+      <InputRange
+        :list="bitsCost"
+        :modelValue="currentCost"
+        @update:modelValue="changeCost"
+      />
+      <span>{{currentCost}}</span>
     </div>
     <ActionList />
   </div>
@@ -12,6 +18,10 @@
 import Stepper from '@/components/Stepper.vue';
 import ActionList from '@/components/ActionList.vue';
 import Widget from '@/components/Widget.vue';
+import InputRange from '@/components/InputRange.vue';
+import useProducts from '@/composables/products';
+
+const { bitsCost, changeCost, currentCost } = useProducts();
 
 </script>
 
