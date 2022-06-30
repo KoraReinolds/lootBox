@@ -16,11 +16,20 @@ export default () => {
 
   const changeCurrentChance = (chance) => store.dispatch('rarity/chance', chance);
 
+  const callActionOnStep = (step, action) => {
+    const lastStepName = currentStep.value.name;
+
+    changeStep(step);
+    action();
+    changeStep(lastStepName);
+  };
+
   return {
     steps,
     changeStep,
     currentStep,
     changeCurrentChance,
     noneChance,
+    callActionOnStep,
   };
 };

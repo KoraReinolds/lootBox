@@ -30,6 +30,8 @@ const group = new THREE.Group();
 const { currentStep, changeStep } = useSteps();
 
 const animation = () => {
+  if (!animations[currentStep.value.name]) return;
+
   animations[currentStep.value.name].moveMeshes({
     scene, group, textMeshes,
   });
@@ -49,6 +51,8 @@ onMounted(() => {
     });
     scene.add(mesh);
     watch(currentStep, (value) => {
+      if (!animations[value.name]) return;
+
       animations[value.name].initScene({
         scene, group, textMeshes,
       });
