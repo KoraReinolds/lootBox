@@ -115,11 +115,13 @@ export default () => {
 
     Object.entries(functions).forEach(([functionName, { params = {}, ...animationData }]) => {
       const animationFunction = animationFunctions[functionName];
-      const { delay = 0, pow = 1 } = params;
+      const { delay = 0 } = params;
       const gaps = Object.keys(animationData);
-      const values = Object.values(animationData);
+      const values = Object.values(animationData).map((v) => v[0]);
+      const pows = Object.values(animationData).map((v) => v[1]);
 
       if (!animationFunction) {
+        console.log(pows);
         console.warn(`can't find animation function with name ${functionName}`);
       }
 
@@ -142,12 +144,14 @@ export default () => {
 
         const to = values[currentGapIndex];
         const from = values[currentGapIndex - 1];
+        const pow = pows[currentGapIndex - 1];
 
         const functionParams = {
           ...params,
           mesh,
           to,
           from,
+          pow,
         };
 
         const duration = +gaps[currentGapIndex] - +gaps[currentGapIndex - 1];
@@ -184,43 +188,43 @@ export default () => {
           mesh: model,
           rotationChange: {
             params: { axis: ['y'] },
-            0: modelYRotation,
-            2000: modelYRotation + Math.PI / 6,
-            2500: Math.PI,
-            6000: Math.PI + Math.PI / 12,
+            0: [modelYRotation, 1],
+            2000: [modelYRotation + Math.PI / 6, 1],
+            2500: [Math.PI, 1],
+            6000: [Math.PI + Math.PI / 12, 1],
           },
           amplitudeChange: {
-            0: 0,
-            500: 0.1,
-            1000: 3,
-            2100: 7,
-            3000: 1000,
-            4000: 1000,
-            6000: 1000,
+            0: [0, 1],
+            500: [0.1, 1],
+            1000: [3, 1],
+            2100: [7, 1],
+            3000: [1000, 1],
+            4000: [1000, 1],
+            6000: [1000, 1],
           },
           scaleChange: {
-            0: 1,
-            2100: 0.8,
-            4000: 0.8,
-            6000: 0.8,
+            0: [1, 1],
+            2100: [0.8, 1],
+            4000: [0.8, 1],
+            6000: [0.8, 1],
           },
         });
 
         animate({
           mesh: group,
           scaleChange: {
-            0: 0.5,
-            2100: 1,
-            2200: 3,
-            4000: 3,
-            6000: 3,
+            0: [0.5, 1],
+            2100: [1, 1],
+            2200: [3, 1],
+            4000: [3, 1],
+            6000: [3, 1],
           },
           rotationChange: {
             params: { axis: ['y'] },
-            0: -Math.PI / 6,
-            2200: -Math.PI / 6,
-            3000: 0,
-            6000: Math.PI / 18,
+            0: [-Math.PI / 6, 1],
+            2200: [-Math.PI / 6, 1],
+            3000: [0, 1],
+            6000: [Math.PI / 18, 1],
           },
         });
 
@@ -228,13 +232,13 @@ export default () => {
           animate({
             mesh: wrappedMesh.children[0],
             amplitudeChange: {
-              0: 1000,
-              500: 1000,
-              1000: 10,
-              2100: 7,
-              3000: 0.3,
-              4000: 0,
-              6000: 0,
+              0: [1000, 1],
+              500: [1000, 1],
+              1000: [10, 1],
+              2100: [7, 1],
+              3000: [0.3, 1],
+              6000: [0, 1],
+              4000: [0, 1],
             },
           });
         });
@@ -263,13 +267,13 @@ export default () => {
         animate({
           mesh: camera,
           positionChange: {
-            params: { axis: ['z'], pow: 1 },
-            0: cameraDistance,
-            500: cameraDistance - 20,
-            2000: 30,
-            3000: 32,
-            5000: 28,
-            6000: 30,
+            params: { axis: ['z'] },
+            0: [cameraDistance, 1],
+            500: [cameraDistance - 20, 1],
+            2000: [30, 1],
+            3000: [32, 1],
+            5000: [28, 1],
+            6000: [30, 1],
           },
         });
       },
@@ -296,16 +300,16 @@ export default () => {
             mesh: wrappedMesh,
             rotationChange: {
               params: { axis: ['y'], delay },
-              0: index % 2 ? -Math.PI : Math.PI,
-              1000: (index % 2 ? -Math.PI : Math.PI) / 16,
-              2000: (index % 2 ? -Math.PI : Math.PI) / 32,
-              6000: (index % 2 ? Math.PI : -Math.PI) / 128,
+              0: [index % 2 ? -Math.PI : Math.PI, 1],
+              1000: [(index % 2 ? -Math.PI : Math.PI) / 16, 1],
+              2000: [(index % 2 ? -Math.PI : Math.PI) / 32, 1],
+              6000: [(index % 2 ? Math.PI : -Math.PI) / 128, 1],
             },
             opacityChange: {
               params: { delay },
-              0: 0,
-              1000: 1,
-              6000: 1,
+              0: [0, 1],
+              1000: [1, 1],
+              6000: [1, 1],
             },
           });
         });
@@ -329,7 +333,7 @@ export default () => {
           value: 1,
         });
       },
-      moveMeshes: ({ textMeshes }) => {
+      moveMeshes: ({ textMeshes, group }) => {
         textMeshes.forEach((wrappedMesh, index) => {
           const delay = index * 200;
 
@@ -337,16 +341,29 @@ export default () => {
             mesh: wrappedMesh,
             positionChange: {
               params: { axis: ['y'], delay },
-              0: -(textHeight / 2) * index - 100,
-              1000: -(textHeight) * index - 5,
-              4000: -(textHeight) * index - 2,
-              6000: -(textHeight) * index,
+              0: [-(textHeight / 2) * index - 100, 0.15],
+              1000: [-(textHeight) * index - 5, 0.7],
+              4000: [-(textHeight) * index + 5, 1.2],
+              6000: [-(textHeight) * index + 3, 1],
             },
             scaleChange: {
               params: { delay },
-              0: 0,
-              1000: 1,
-              6000: 1,
+              0: [0, 0.15],
+              2000: [1, 1],
+              6000: [1, 1],
+            },
+          });
+
+          animate({
+            mesh: group,
+            scaleChange: {
+              params: { delay },
+              0: [1, 1],
+              [2000 - 800]: [1, 1],
+              [3000 - 800]: [0.95, 1],
+              [4000 - 800]: [1, 1],
+              [5000 - 800]: [0.95, 1],
+              6000: [1, 1],
             },
           });
         });
