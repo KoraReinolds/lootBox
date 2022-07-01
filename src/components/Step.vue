@@ -8,6 +8,7 @@
       :list="list"
       :modelValue="chance"
       @update:modelValue="changeChance"
+      :disabled="disabled"
     />
   </div>
 </template>
@@ -32,6 +33,7 @@ const {
 const chance = ref(props.step.rarityConfig.chance);
 const maxValue = computed(() => ((+noneChance.value + +chance.value)) + 1);
 const list = computed(() => [...Array(maxValue.value).keys()]);
+const disabled = computed(() => props.step.name === 'none' || maxValue.value === 1);
 const changeChance = (currentChance) => { chance.value = currentChance; };
 
 watch(chance, (curChance, prevChance) => {
