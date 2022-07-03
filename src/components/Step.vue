@@ -32,7 +32,7 @@ const {
 } = useSteps();
 const chance = ref(props.step.rarityConfig.chance);
 const maxValue = computed(() => ((+noneChance.value + +chance.value)) + 1);
-const list = computed(() => [...Array(maxValue.value).keys()]);
+const list = computed(() => [...Array(maxValue.value).keys()].map((v) => `${v}`));
 const disabled = computed(() => props.step.name === 'none' || maxValue.value === 1);
 const changeChance = (currentChance) => { chance.value = currentChance; };
 

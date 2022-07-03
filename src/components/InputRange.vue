@@ -28,7 +28,7 @@ const props = defineProps({
     type: Boolean,
   },
 });
-const listIndex = ref(props.list.indexOf(+props.modelValue));
+const listIndex = ref(props.list.indexOf(props.modelValue));
 const emit = defineEmits(['update:modelValue']);
 
 watch(listIndex, (index) => {

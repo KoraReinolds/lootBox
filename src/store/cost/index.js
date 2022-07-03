@@ -1,7 +1,7 @@
 import generateModule from '@/store/moduleGenerator';
 
 const costConfig = {
-  bitsCost: '0',
+  bitsCost: '300',
 };
 
 export default generateModule({
