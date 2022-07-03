@@ -14,13 +14,16 @@ export default () => {
     store.commit('products/list', products);
   };
 
-  getProducts();
-
   const bitsCost = computed(() => store.getters['products/bitsCost']);
 
   const currentCost = computed(() => store.getters['cost/bitsCost']);
 
   const changeCost = (cost) => store.dispatch('cost/bitsCost', cost);
 
-  return { currentCost, bitsCost, changeCost };
+  return {
+    currentCost,
+    bitsCost,
+    changeCost,
+    getProducts,
+  };
 };

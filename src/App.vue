@@ -4,8 +4,12 @@
 
 <script setup>
 import useTwitch from '@/composables/twitch';
+import useProducts from '@/composables/products';
 
 useTwitch();
+const { getProducts } = useProducts();
+
+getProducts();
 
 </script>
 
