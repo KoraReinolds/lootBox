@@ -36,6 +36,7 @@ defaultActiveFields.forEach((field) => {
 });
 
 defaultSteps[defaultField].rarityConfig = rarityActiveConfig;
+defaultSteps.epic.rarityConfig = rarityActiveConfig;
 
 export default generateModule({
   namespaced: true,
