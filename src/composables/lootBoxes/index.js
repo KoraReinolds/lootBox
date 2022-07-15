@@ -7,7 +7,10 @@ export default () => {
   const store = useStore();
   const { twitch } = useTwitch();
 
-  const lootBox = computed(() => store.getters['lootBox/current_']);
+  const lootBox = computed(() => Object.values(store.getters['lootBox/current_']));
+
+  const activeTypes = computed(() => lootBox.value
+    .filter((data) => +data.rarityConfig?.chance));
 
   const showLootBox = async (sku) => {
     try {
@@ -23,5 +26,6 @@ export default () => {
   return {
     lootBox,
     showLootBox,
+    activeTypes,
   };
 };

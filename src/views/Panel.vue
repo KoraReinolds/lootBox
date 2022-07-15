@@ -2,25 +2,23 @@
   <div>
     <h1>panel</h1>
     <div
-      v-for="(data, type) in $store.getters['lootBox/current_']"
-      :key="type"
+      v-for="data in activeTypes"
+      :key="data.name"
     >
-      <div v-if="+data?.rarityConfig?.chance">
-        <h2
-          v-text="type"
-          @click="currentType = type"
-        />
-        <template
-          v-if="type === currentType"
+      <h2
+        v-text="data.name"
+        @click="currentType = data.name"
+      />
+      <template
+        v-if="data.name === currentType"
+      >
+        <div
+          v-for="(action, index) in data.rarityConfig.actions"
+          :key="`action-${index}`"
         >
-          <div
-            v-for="(action, index) in data.rarityConfig.actions"
-            :key="`action-${index}`"
-          >
-            {{ action.value }}
-          </div>
-        </template>
-      </div>
+          {{ action.value }}
+        </div>
+      </template>
     </div>
     <BaseButton
       @click="showLootBox(`Box-${currentCost}`)"
@@ -36,8 +34,8 @@ import BaseButton from '@/components/BaseButton.vue';
 import useLootBoxes from '@/composables/lootBoxes';
 import useProducts from '@/composables/products';
 
-const { showLootBox } = useLootBoxes();
+const { showLootBox, activeTypes } = useLootBoxes();
 const { currentCost } = useProducts();
-const currentType = ref('common');
+const currentType = ref(activeTypes.value[0].name);
 
 </script>
