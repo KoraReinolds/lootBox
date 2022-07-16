@@ -1,6 +1,6 @@
 import { useStore } from 'vuex';
-
 import { defaultConfigData } from '@/store/config/data';
+import i18n from '@/plugins/i18n';
 
 export default () => {
   const twitch = window?.Twitch?.ext;
@@ -29,6 +29,7 @@ export default () => {
 
   twitch.onContext((context) => {
     if (context.theme) store.commit('config/theme', context.theme);
+    if (context.language) i18n.global.locale = context.language;
   });
 
   return { twitch, saveConfig };
