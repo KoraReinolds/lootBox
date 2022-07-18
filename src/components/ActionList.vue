@@ -10,6 +10,7 @@
         @focus="setActionIndex(index)"
         @blur="saveActions"
         placeholder="write to add new action"
+        v-focus
       />
     </div>
   </div>
