@@ -1,4 +1,9 @@
 <template>
+  <icon
+    src="@/assets/svg/close.svg"
+    width="150"
+    height="150"
+  />
   <router-view/>
 </template>
 
